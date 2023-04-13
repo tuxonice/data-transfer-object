@@ -1,0 +1,25 @@
+{
+  "transfers": [
+    {
+      "name": "Customer",
+      "properties": [
+        {
+          "name": "email",
+          "type": "string"
+        },
+        {
+          "name": "firstName",
+          "type": "string"
+        },
+        {
+          "name": "lastName",
+          "type": "string"
+        },
+        {
+          "name": "isGuest",
+          "type": "bool"
+        }
+      ]
+    }
+  ]
+}

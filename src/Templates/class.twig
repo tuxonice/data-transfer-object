@@ -1,0 +1,30 @@
+<?php
+
+namespace TransferObjects\DataTransferObjects;
+
+use TransferObjects\AbstractTransfer;
+
+class {{ className }} extends {{ abstractClass }}
+{
+
+{% for property in properties %}
+   {{ property.visibility }} {{ property.type }} ${{ property.camelCaseName }};
+
+{% endfor %}
+
+
+{% for property in properties %}
+
+    public function {{ property.getPrefix }}{{ property.camelCaseName|capitalize }}(): {{ property.type }}
+    {
+        return $this->{{ property.camelCaseName }};
+    }
+
+    public function set{{ property.camelCaseName|capitalize }}({{ property.type }} ${{ property.camelCaseName }})
+    {
+        $this->{{ property.camelCaseName }} = ${{ property.camelCaseName }};
+    }
+
+{% endfor %}
+
+}

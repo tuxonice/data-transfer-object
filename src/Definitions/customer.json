@@ -1,0 +1,51 @@
+{
+  "transfers": [
+    {
+      "name": "Customer",
+      "properties": [
+        {
+          "name": "email",
+          "type": "string"
+        },
+        {
+          "name": "firstName",
+          "type": "string"
+        },
+        {
+          "name": "lastName",
+          "type": "string"
+        },
+        {
+          "name": "isGuest",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "User",
+      "properties": [
+        {
+          "name": "email",
+          "type": "string"
+        },
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "roles",
+          "type": "array"
+        }
+      ]
+    },
+    {
+      "name": "UserList",
+      "properties": [
+        {
+          "name": "Users",
+          "type": "array"
+        }
+      ]
+    }
+  ]
+}

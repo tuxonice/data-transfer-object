@@ -1,0 +1,12 @@
+#!/usr/bin/env php
+<?php
+
+require dirname(__DIR__).'/vendor/autoload.php';
+require dirname(__DIR__).'/bootstrap.php';
+
+use Symfony\Component\Console\Application;
+use TransferObjects\Command\GenerateTransferCommand;
+
+$application = new Application();
+$application->add(new GenerateTransferCommand());
+$application->run();
