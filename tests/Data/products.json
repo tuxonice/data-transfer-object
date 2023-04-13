@@ -1,0 +1,30 @@
+{
+  "transfers": [
+    {
+      "name": "Products",
+      "properties": [
+        {
+          "name": "sku",
+          "type": "string"
+        },
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "price",
+          "type": "float"
+        }
+      ]
+    },
+    {
+      "name": "Category",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string"
+        }
+      ]
+    }
+  ]
+}
