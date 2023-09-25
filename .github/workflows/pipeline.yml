@@ -1,0 +1,26 @@
+name: Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - 'dto-**'
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  Tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: shivammathur/setup-php@92e992b198447bb1f86dda964de6ff1f06a54b77
+        with:
+          php-version: '8.2'
+      - uses: actions/checkout@v4
+      - name: Install Dependencies
+        run: composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      - name: Run Code style
+        run: vendor/bin/phpcs
+      - name: Run PHPStan
+        run: vendor/bin/phpstan analyse
+      - name: Execute Unit tests
+        run: vendor/bin/phpunit
