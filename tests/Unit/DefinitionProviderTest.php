@@ -8,7 +8,7 @@ use TransferObjects\DefinitionProvider;
 
 class DefinitionProviderTest extends TestCase
 {
-    public function testGenerateTransfer(): void
+    public function testProvide(): void
     {
         $definitionProvider = new DefinitionProvider(dirname(__DIR__).'/Data');
         $definitionProvider->provide();
