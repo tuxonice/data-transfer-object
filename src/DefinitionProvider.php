@@ -1,11 +1,12 @@
 <?php
 
-namespace TransferObjects;
+namespace Tlab\TransferObjects;
 
 class DefinitionProvider
 {
     public function __construct(
-        private readonly string $definitionPath
+        private readonly string $definitionPath,
+        private readonly string $namespace,
     ) {
     }
 
@@ -20,7 +21,8 @@ class DefinitionProvider
         $tranfers = [];
         foreach ($definitions as $definition) {
             $classTransfer = [
-                'className' => $definition['name'],
+                'namespace' => $this->namespace,
+                'className' => $definition['name'] . 'Transfer',
                 'abstractClass' => 'AbstractTransfer',
             ];
 

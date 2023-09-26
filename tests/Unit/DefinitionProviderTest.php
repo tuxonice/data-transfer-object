@@ -1,21 +1,22 @@
 <?php
 
-namespace Unit;
+namespace Tlab\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use TransferObjects\DefinitionProvider;
+use Tlab\TransferObjects\DefinitionProvider;
 
 
 class DefinitionProviderTest extends TestCase
 {
     public function testProvide(): void
     {
-        $definitionProvider = new DefinitionProvider(dirname(__DIR__).'/Data');
+        $definitionProvider = new DefinitionProvider(dirname(__DIR__).'/Data', 'TestNamespace');
         $definitionProvider->provide();
 
         self::assertEquals([
             [
-                'className' => 'Products',
+                'namespace' => 'TestNamespace',
+                'className' => 'ProductTransfer',
                 'abstractClass' => 'AbstractTransfer',
                 'properties' => [
                     [
@@ -33,7 +34,8 @@ class DefinitionProviderTest extends TestCase
                 ]
             ],
             [
-                'className' => 'Category',
+                'namespace' => 'TestNamespace',
+                'className' => 'CategoryTransfer',
                 'abstractClass' => 'AbstractTransfer',
                 'properties' => [
                     [
@@ -43,7 +45,8 @@ class DefinitionProviderTest extends TestCase
                 ]
             ],
             [
-                'className' => 'Customer',
+                'namespace' => 'TestNamespace',
+                'className' => 'CustomerTransfer',
                 'abstractClass' => 'AbstractTransfer',
                 'properties' => [
                     [

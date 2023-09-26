@@ -1,19 +1,19 @@
 <?php
 
-namespace TransferObjects\DataTransferObjects;
+namespace Tlab\Tests\Generated;
 
-use TransferObjects\AbstractTransfer;
+use Tlab\TransferObjects\AbstractTransfer;
 
-class Category extends AbstractTransfer
+class CategoryTransfer extends AbstractTransfer
 {
-    private string $name;
+    private ?string $name = null;
 
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 

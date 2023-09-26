@@ -1,7 +1,7 @@
 {
   "transfers": [
     {
-      "name": "Products",
+      "name": "Product",
       "properties": [
         {
           "name": "sku",

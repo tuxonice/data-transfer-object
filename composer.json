@@ -8,7 +8,12 @@
     ],
     "autoload": {
         "psr-4": {
-            "TransferObjects\\": "src/"
+            "Tlab\\TransferObjects\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tlab\\Tests\\": "tests/"
         }
     },
     "require": {

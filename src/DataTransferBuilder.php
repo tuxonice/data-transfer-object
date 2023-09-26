@@ -1,30 +1,28 @@
 <?php
 
-namespace TransferObjects;
+namespace Tlab\TransferObjects;
 
 use Webmozart\Assert\Assert;
 
 class DataTransferBuilder
 {
-    private string $definitionPath;
-
-    private string $outputPath;
-
-    public function __construct(string $definitionPath, string $outputPath)
-    {
+    public function __construct(
+        private readonly string $definitionPath,
+        private readonly string $outputPath,
+        private readonly string $namespace,
+    ) {
         Assert::directory($definitionPath, 'Missing definition path');
         Assert::directory($outputPath, 'Missing output path');
 
         Assert::writable($definitionPath, 'Definition path is not writable');
         Assert::readable($outputPath, 'Output path is not readable');
 
-        $this->definitionPath = $definitionPath;
-        $this->outputPath = $outputPath;
+        Assert::notEmpty($namespace, 'Namespace is missing');
     }
 
     public function build(): void
     {
-        $definitionBuilder = new DefinitionProvider($this->definitionPath);
+        $definitionBuilder = new DefinitionProvider($this->definitionPath, $this->namespace);
         $definitions = $definitionBuilder->provide();
 
         $outputBuilder = new OutputBuilder($this->outputPath, $definitions);

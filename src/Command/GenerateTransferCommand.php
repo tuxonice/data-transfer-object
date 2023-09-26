@@ -1,11 +1,11 @@
 <?php
 
-namespace TransferObjects\Command;
+namespace Tlab\TransferObjects\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use TransferObjects\DataTransferBuilder;
+use Tlab\TransferObjects\DataTransferBuilder;
 
 class GenerateTransferCommand extends Command
 {
@@ -23,6 +23,7 @@ class GenerateTransferCommand extends Command
         $dataTransferBuilder = new DataTransferBuilder(
             dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Definitions',
             dirname(__DIR__) . DIRECTORY_SEPARATOR . 'DataTransferObjects',
+            'TransferObjects\\DataTransferObjects'
         );
         $dataTransferBuilder->build();
 

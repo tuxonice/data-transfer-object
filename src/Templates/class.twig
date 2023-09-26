@@ -1,25 +1,25 @@
 <?php
 
-namespace TransferObjects\DataTransferObjects;
+namespace {{ namespace }};
 
-use TransferObjects\AbstractTransfer;
+use Tlab\TransferObjects\AbstractTransfer;
 
 class {{ className }} extends {{ abstractClass }}
 {
 {% for property in properties %}
-    private {{ property.type }} ${{ property.camelCaseName }};
+    private ?{{ property.type }} ${{ property.camelCaseName }} = null;
 {% if not loop.last %}
 
 {% endif %}
 {% endfor %}
 
 {% for property in properties %}
-    public function get{{ property.camelCaseName|capitalize }}(): {{ property.type }}
+    public function get{{ property.camelCaseName|capitalize }}(): ?{{ property.type }}
     {
         return $this->{{ property.camelCaseName }};
     }
 
-    public function set{{ property.camelCaseName|capitalize }}({{ property.type }} ${{ property.camelCaseName }}): self
+    public function set{{ property.camelCaseName|capitalize }}(?{{ property.type }} ${{ property.camelCaseName }}): self
     {
         $this->{{ property.camelCaseName }} = ${{ property.camelCaseName }};
 
