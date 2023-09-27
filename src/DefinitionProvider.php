@@ -31,6 +31,7 @@ class DefinitionProvider
                 $classProperties[] = [
                     'type' => $property['type'],
                     'camelCaseName' => $property['name'],
+                    'nullable' => $property['nullable']
                 ];
             }
 

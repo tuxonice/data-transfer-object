@@ -6,14 +6,14 @@ use Tlab\TransferObjects\AbstractTransfer;
 
 class CategoryTransfer extends AbstractTransfer
 {
-    private ?string $name = null;
+    private string $name;
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function setName(?string $name): self
+    public function setName(string $name): self
     {
         $this->name = $name;
 

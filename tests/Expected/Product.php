@@ -6,18 +6,18 @@ use Tlab\TransferObjects\AbstractTransfer;
 
 class ProductTransfer extends AbstractTransfer
 {
-    private ?string $sku = null;
+    private string $sku;
 
-    private ?string $name = null;
+    private ?string $name;
 
-    private ?float $price = null;
+    private float $price;
 
-    public function getSku(): ?string
+    public function getSku(): string
     {
         return $this->sku;
     }
 
-    public function setSku(?string $sku): self
+    public function setSku(string $sku): self
     {
         $this->sku = $sku;
 
@@ -36,12 +36,12 @@ class ProductTransfer extends AbstractTransfer
         return $this;
     }
 
-    public function getPrice(): ?float
+    public function getPrice(): float
     {
         return $this->price;
     }
 
-    public function setPrice(?float $price): self
+    public function setPrice(float $price): self
     {
         $this->price = $price;
 

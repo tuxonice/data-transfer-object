@@ -5,15 +5,18 @@
       "properties": [
         {
           "name": "sku",
-          "type": "string"
+          "type": "string",
+          "nullable": false
         },
         {
           "name": "name",
-          "type": "string"
+          "type": "string",
+          "nullable": false
         },
         {
           "name": "price",
-          "type": "float"
+          "type": "float",
+          "nullable": false
         }
       ]
     },
@@ -22,7 +25,8 @@
       "properties": [
         {
           "name": "name",
-          "type": "string"
+          "type": "string",
+          "nullable": false
         }
       ]
     }

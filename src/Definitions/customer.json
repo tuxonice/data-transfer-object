@@ -5,19 +5,23 @@
       "properties": [
         {
           "name": "email",
-          "type": "string"
+          "type": "string",
+          "nullable": false
         },
         {
           "name": "firstName",
-          "type": "string"
+          "type": "string",
+          "nullable": false
         },
         {
           "name": "lastName",
-          "type": "string"
+          "type": "string",
+          "nullable": false
         },
         {
           "name": "isGuest",
-          "type": "bool"
+          "type": "bool",
+          "nullable": false
         }
       ]
     },
@@ -26,15 +30,18 @@
       "properties": [
         {
           "name": "email",
-          "type": "string"
+          "type": "string",
+          "nullable": false
         },
         {
           "name": "name",
-          "type": "string"
+          "type": "string",
+          "nullable": false
         },
         {
           "name": "roles",
-          "type": "array"
+          "type": "array",
+          "nullable": false
         }
       ]
     },
@@ -43,7 +50,8 @@
       "properties": [
         {
           "name": "Users",
-          "type": "array"
+          "type": "array",
+          "nullable": false
         }
       ]
     }

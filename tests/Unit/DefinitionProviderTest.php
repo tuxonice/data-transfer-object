@@ -22,14 +22,17 @@ class DefinitionProviderTest extends TestCase
                     [
                         'type' => 'string',
                         'camelCaseName' => 'sku',
+                        'nullable' => false,
                     ],
                     [
                         'type' => 'string',
                         'camelCaseName' => 'name',
+                        'nullable' => true,
                     ],
                     [
                         'type' => 'float',
                         'camelCaseName' => 'price',
+                        'nullable' => false,
                     ],
                 ]
             ],
@@ -41,6 +44,7 @@ class DefinitionProviderTest extends TestCase
                     [
                         'type' => 'string',
                         'camelCaseName' => 'name',
+                        'nullable' => false,
                     ],
                 ]
             ],
@@ -52,18 +56,22 @@ class DefinitionProviderTest extends TestCase
                     [
                         'type' => 'string',
                         'camelCaseName' => 'email',
+                        'nullable' => false,
                     ],
                     [
                         'type' => 'string',
                         'camelCaseName' => 'firstName',
+                        'nullable' => false,
                     ],
                     [
                         'type' => 'string',
                         'camelCaseName' => 'lastName',
+                        'nullable' => false,
                     ],
                     [
                         'type' => 'bool',
                         'camelCaseName' => 'isGuest',
+                        'nullable' => false,
                     ]
                 ]
             ],
