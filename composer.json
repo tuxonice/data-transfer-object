@@ -21,8 +21,6 @@
         "ext-json": "*",
         "vlucas/phpdotenv": "^5.3",
         "twig/twig": "^3.5",
-        "symfony/console": "^6.2",
-        "monolog/monolog": "^3.3",
         "webmozart/assert": "^1.11"
     },
     "require-dev": {
