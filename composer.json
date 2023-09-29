@@ -1,9 +1,16 @@
 {
     "name": "tuxonice/transfer-objects",
+    "description": "Build data transfer objects from json definition",
+    "keywords" : [
+        "dto",
+        "data-transfer-objects"
+    ],
+    "license" : "MIT",
     "authors": [
         {
             "name": "Helder Correia",
-            "email": "tuxboy@tlab.pt"
+            "email": "tuxboy@tlab.pt",
+            "role" : "Developer"
         }
     ],
     "autoload": {
@@ -28,5 +35,6 @@
         "squizlabs/php_codesniffer": "^3.7",
         "phpstan/phpstan": "^1.10",
         "phpunit/phpunit": "^10.1"
-    }
+    },
+    "minimum-stability" : "dev"
 }
