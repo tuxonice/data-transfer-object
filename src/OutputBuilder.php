@@ -7,13 +7,17 @@ use Twig\Loader\FilesystemLoader;
 
 class OutputBuilder
 {
+    /**
+     * @param string $outputPath
+     * @param array<int,array<string, mixed>> $definitions
+     */
     public function __construct(
         private readonly string $outputPath,
         private readonly array $definitions,
     ) {
     }
 
-    public function save()
+    public function save(): void
     {
         $template = $this->getTwigEnvironment()->load('class.twig');
 

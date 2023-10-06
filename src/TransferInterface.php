@@ -4,7 +4,14 @@ namespace Tlab\TransferObjects;
 
 interface TransferInterface
 {
-    public function toArray(bool $isRecursive = true): array;
+    /**
+     * @return array<string,mixed>
+     */
+    public function toArray(): array;
 
-    public static function fromArray(array $data, bool $ignoreMissingProperty = false): TransferInterface;
+    /**
+     * @param array<string,mixed> $data
+     * @return TransferInterface
+     */
+    public static function fromArray(array $data): TransferInterface;
 }

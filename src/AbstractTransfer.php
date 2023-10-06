@@ -2,21 +2,38 @@
 
 namespace Tlab\TransferObjects;
 
+use ReflectionClass;
+use ReflectionProperty;
+
 abstract class AbstractTransfer implements TransferInterface
 {
     final public function __construct()
     {
     }
 
-    public function toArray(bool $isRecursive = true, bool $camelCasedKeys = false): array
+    /**
+     * @return array<string,mixed>
+     */
+    public function toArray(): array
     {
-        //TODO: implement
-        return [];
+        $reflect = new ReflectionClass($this);
+        $properties = $reflect->getProperties(ReflectionProperty::IS_PRIVATE);
+
+        $data = [];
+        foreach ($properties as $property) {
+            $data[$property->getName()] = $property->getValue($this);
+        }
+
+        return $data;
     }
 
-    public static function fromArray(array $data, bool $ignoreMissingProperty = false): TransferInterface
+
+    /**
+     * @param array<string,mixed> $data
+     * @return TransferInterface
+     */
+    public static function fromArray(array $data): TransferInterface
     {
-        //TODO: implement
         $transfer = new static();
         foreach ($data as $key => $value) {
             $methodName = 'set' . ucfirst($key);

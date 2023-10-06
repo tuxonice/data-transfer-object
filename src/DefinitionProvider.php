@@ -10,11 +10,14 @@ class DefinitionProvider
     ) {
     }
 
+    /**
+     * @return array<int,array<string, mixed>>
+     */
     public function provide(): array
     {
         $definitions = [];
         foreach (glob($this->definitionPath . DIRECTORY_SEPARATOR . '*.json') as $filename) {
-            $decodeFile = json_decode(file_get_contents($filename), true);
+            $decodeFile = json_decode((string)file_get_contents($filename), true);
             $definitions = array_merge($decodeFile['transfers'], $definitions);
         }
 
