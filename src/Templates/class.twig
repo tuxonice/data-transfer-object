@@ -4,6 +4,14 @@ namespace {{ namespace }};
 
 use Tlab\TransferObjects\AbstractTransfer;
 
+/**
+ * !!! THIS TRANSFER CLASS FILE IS AUTO-GENERATED, CHANGES WILL BREAK YOUR PROJECT
+ * !!! DO NOT CHANGE ANYTHING IN THIS FILE
+ {% if deprecationDescription is not null -%}
+ *
+ * @deprecated {{ deprecationDescription }}
+ {% endif -%}
+ */
 class {{ className }} extends {{ abstractClass }}
 {
 {% for property in properties %}
@@ -14,12 +22,18 @@ class {{ className }} extends {{ abstractClass }}
 {% endfor %}
 
 {% for property in properties %}
-    public function get{{ property.camelCaseName|capitalize }}(): {{ property.nullable ? '?' }}{{ property.type }}
+    {% if property.deprecationDescription is not null -%}
+     /** @deprecated {{ property.deprecationDescription }} */
+    {% endif -%}
+    public function get{{ property.camelCaseName[:1]|upper ~ property.camelCaseName[1:] }}(): {{ property.nullable ? '?' }}{{ property.type }}
     {
         return $this->{{ property.camelCaseName }};
     }
 
-    public function set{{ property.camelCaseName|capitalize }}({{ property.nullable ? '?' }}{{ property.type }} ${{ property.camelCaseName }}): self
+    {% if property.deprecationDescription is not null -%}
+        /** @deprecated {{ property.deprecationDescription }} */
+    {% endif -%}
+    public function set{{ property.camelCaseName[:1]|upper ~ property.camelCaseName[1:] }}({{ property.nullable ? '?' }}{{ property.type }} ${{ property.camelCaseName }}): self
     {
         $this->{{ property.camelCaseName }} = ${{ property.camelCaseName }};
 

@@ -17,10 +17,10 @@ class DataTransferBuilderTest extends TestCase
 
     public function tearDown(): void
     {
-        $pattern = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Generated' . DIRECTORY_SEPARATOR . '*.php';
-        foreach (glob($pattern) as $filename) {
-            unlink($filename);
-        }
+//        $pattern = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Generated' . DIRECTORY_SEPARATOR . '*.php';
+//        foreach (glob($pattern) as $filename) {
+//            unlink($filename);
+//        }
         parent::tearDown();
     }
 
@@ -35,6 +35,7 @@ class DataTransferBuilderTest extends TestCase
         self::assertFileEquals($expectedFiles[0], $generatedFiles[0]);
         self::assertFileEquals($expectedFiles[1], $generatedFiles[1]);
         self::assertFileEquals($expectedFiles[2], $generatedFiles[2]);
+        self::assertFileEquals($expectedFiles[3], $generatedFiles[3]);
     }
 
     public function testCanExportTransferClassToArray(): void

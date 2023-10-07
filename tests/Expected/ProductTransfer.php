@@ -4,6 +4,10 @@ namespace Tlab\Tests\Generated;
 
 use Tlab\TransferObjects\AbstractTransfer;
 
+/**
+ * !!! THIS TRANSFER CLASS FILE IS AUTO-GENERATED, CHANGES WILL BREAK YOUR PROJECT
+ * !!! DO NOT CHANGE ANYTHING IN THIS FILE
+ */
 class ProductTransfer extends AbstractTransfer
 {
     private string $sku;

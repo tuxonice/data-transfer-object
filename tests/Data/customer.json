@@ -2,26 +2,66 @@
   "transfers": [
     {
       "name": "Customer",
+      "description": "DTO description",
+      "deprecationDescription": "This class is deprecated",
       "properties": [
         {
           "name": "email",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "description": "The customer email"
         },
         {
           "name": "firstName",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "description": "The customer first name"
         },
         {
           "name": "lastName",
           "type": "string",
-          "nullable": false
+          "nullable": true,
+          "description": "The customer last name"
         },
         {
           "name": "isGuest",
           "type": "bool",
-          "nullable": false
+          "description": "Is a guest customer",
+          "deprecationDescription": "isGuest property is deprecated"
+        }
+      ]
+    },
+    {
+      "name": "SomeOtherDataTransferObject",
+      "description": "DTO description",
+      "deprecationDescription": "This class is deprecated",
+      "properties": [
+        {
+          "name": "id",
+          "type": "int",
+          "nullable": false,
+          "description": "An integer field"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "nullable": true,
+          "description": "A string field"
+        },
+        {
+          "name": "price",
+          "type": "float",
+          "description": "A float field"
+        },
+        {
+          "name": "isActive",
+          "type": "bool",
+          "description": "A bool field",
+          "deprecationDescription": "isActive property is deprecated"
+        },
+        {
+          "name": "tags",
+          "type": "string"
         }
       ]
     }

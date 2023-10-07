@@ -27,6 +27,8 @@ class DefinitionProvider
                 'namespace' => $this->namespace,
                 'className' => $definition['name'] . 'Transfer',
                 'abstractClass' => 'AbstractTransfer',
+                'description' => $definition['description'] ?? null,
+                'deprecationDescription' => $definition['deprecationDescription'] ?? null,
             ];
 
             $classProperties = [];
@@ -34,7 +36,9 @@ class DefinitionProvider
                 $classProperties[] = [
                     'type' => $property['type'],
                     'camelCaseName' => $property['name'],
-                    'nullable' => $property['nullable']
+                    'nullable' => $property['nullable'] ?? false,
+                    'description' => $property['description'] ?? null,
+                    'deprecationDescription' => $property['deprecationDescription'] ?? null,
                 ];
             }
 

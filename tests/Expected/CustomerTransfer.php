@@ -4,13 +4,19 @@ namespace Tlab\Tests\Generated;
 
 use Tlab\TransferObjects\AbstractTransfer;
 
+/**
+ * !!! THIS TRANSFER CLASS FILE IS AUTO-GENERATED, CHANGES WILL BREAK YOUR PROJECT
+ * !!! DO NOT CHANGE ANYTHING IN THIS FILE
+ *
+ * @deprecated This class is deprecated
+ */
 class CustomerTransfer extends AbstractTransfer
 {
     private string $email;
 
     private string $firstName;
 
-    private string $lastName;
+    private ?string $lastName;
 
     private bool $isGuest;
 
@@ -26,36 +32,38 @@ class CustomerTransfer extends AbstractTransfer
         return $this;
     }
 
-    public function getFirstname(): string
+    public function getFirstName(): string
     {
         return $this->firstName;
     }
 
-    public function setFirstname(string $firstName): self
+    public function setFirstName(string $firstName): self
     {
         $this->firstName = $firstName;
 
         return $this;
     }
 
-    public function getLastname(): string
+    public function getLastName(): ?string
     {
         return $this->lastName;
     }
 
-    public function setLastname(string $lastName): self
+    public function setLastName(?string $lastName): self
     {
         $this->lastName = $lastName;
 
         return $this;
     }
 
-    public function getIsguest(): bool
+    /** @deprecated isGuest property is deprecated */
+    public function getIsGuest(): bool
     {
         return $this->isGuest;
     }
 
-    public function setIsguest(bool $isGuest): self
+    /** @deprecated isGuest property is deprecated */
+    public function setIsGuest(bool $isGuest): self
     {
         $this->isGuest = $isGuest;
 
