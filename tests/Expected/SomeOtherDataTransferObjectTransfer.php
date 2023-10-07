@@ -12,21 +12,44 @@ use Tlab\TransferObjects\AbstractTransfer;
  */
 class SomeOtherDataTransferObjectTransfer extends AbstractTransfer
 {
+    /**
+     * @var int
+     */
     private int $id;
 
+    /**
+     * @var string|null
+     */
     private ?string $name;
 
+    /**
+     * @var float
+     */
     private float $price;
 
+    /**
+     * @var bool
+     */
     private bool $isActive;
 
-    private string $tags;
+    /**
+     * @var array<string>
+     */
+    private array $tags = [];
 
+    /**
+     * @return int
+     */
     public function getId(): int
     {
         return $this->id;
     }
 
+    /**
+     * @param int $id
+     *
+     * @return $this
+     */
     public function setId(int $id): self
     {
         $this->id = $id;
@@ -34,11 +57,19 @@ class SomeOtherDataTransferObjectTransfer extends AbstractTransfer
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * @param string|null $name
+     *
+     * @return $this
+     */
     public function setName(?string $name): self
     {
         $this->name = $name;
@@ -46,11 +77,19 @@ class SomeOtherDataTransferObjectTransfer extends AbstractTransfer
         return $this;
     }
 
+    /**
+     * @return float
+     */
     public function getPrice(): float
     {
         return $this->price;
     }
 
+    /**
+     * @param float $price
+     *
+     * @return $this
+     */
     public function setPrice(float $price): self
     {
         $this->price = $price;
@@ -58,13 +97,23 @@ class SomeOtherDataTransferObjectTransfer extends AbstractTransfer
         return $this;
     }
 
-    /** @deprecated isActive property is deprecated */
+    /**
+     * @return bool
+     *
+     * @deprecated isActive property is deprecated
+     */
     public function getIsActive(): bool
     {
         return $this->isActive;
     }
 
-    /** @deprecated isActive property is deprecated */
+    /**
+     * @param bool $isActive
+     *
+     * @return $this
+     *
+     * @deprecated isActive property is deprecated
+     */
     public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
@@ -72,14 +121,34 @@ class SomeOtherDataTransferObjectTransfer extends AbstractTransfer
         return $this;
     }
 
-    public function getTags(): string
+    /**
+     * @return array<string>
+     */
+    public function getTags(): array
     {
         return $this->tags;
     }
 
-    public function setTags(string $tags): self
+    /**
+     * @param array<string> $tags
+     *
+     * @return $this
+     */
+    public function setTags(array $tags): self
     {
         $this->tags = $tags;
+
+        return $this;
+    }
+
+    /**
+     * @param string $tag
+     *
+     * @return $this
+     */
+    public function addTag(string $tag): self
+    {
+        $this->tags[] = $tag;
 
         return $this;
     }

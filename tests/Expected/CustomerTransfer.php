@@ -12,19 +12,39 @@ use Tlab\TransferObjects\AbstractTransfer;
  */
 class CustomerTransfer extends AbstractTransfer
 {
+    /**
+     * @var string
+     */
     private string $email;
 
+    /**
+     * @var string
+     */
     private string $firstName;
 
+    /**
+     * @var string|null
+     */
     private ?string $lastName;
 
+    /**
+     * @var bool
+     */
     private bool $isGuest;
 
+    /**
+     * @return string
+     */
     public function getEmail(): string
     {
         return $this->email;
     }
 
+    /**
+     * @param string $email
+     *
+     * @return $this
+     */
     public function setEmail(string $email): self
     {
         $this->email = $email;
@@ -32,11 +52,19 @@ class CustomerTransfer extends AbstractTransfer
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getFirstName(): string
     {
         return $this->firstName;
     }
 
+    /**
+     * @param string $firstName
+     *
+     * @return $this
+     */
     public function setFirstName(string $firstName): self
     {
         $this->firstName = $firstName;
@@ -44,11 +72,19 @@ class CustomerTransfer extends AbstractTransfer
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getLastName(): ?string
     {
         return $this->lastName;
     }
 
+    /**
+     * @param string|null $lastName
+     *
+     * @return $this
+     */
     public function setLastName(?string $lastName): self
     {
         $this->lastName = $lastName;
@@ -56,17 +92,28 @@ class CustomerTransfer extends AbstractTransfer
         return $this;
     }
 
-    /** @deprecated isGuest property is deprecated */
+    /**
+     * @return bool
+     *
+     * @deprecated isGuest property is deprecated
+     */
     public function getIsGuest(): bool
     {
         return $this->isGuest;
     }
 
-    /** @deprecated isGuest property is deprecated */
+    /**
+     * @param bool $isGuest
+     *
+     * @return $this
+     *
+     * @deprecated isGuest property is deprecated
+     */
     public function setIsGuest(bool $isGuest): self
     {
         $this->isGuest = $isGuest;
 
         return $this;
     }
+
 }

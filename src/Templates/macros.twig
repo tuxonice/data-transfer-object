@@ -1,0 +1,76 @@
+{%- macro property(property) %}
+    private {{ property.nullable ? '?' }}{{ property.type }} ${{ property.camelCaseName }}{{ property.type == 'array' ? ' = []' }};
+{% endmacro -%}
+
+{%- macro propertyDocBlock(property) %}
+    /**
+     * @var {{ property.type }}{{ property.nullable ? '|null' }}{% if property.type == 'array' %}<{{ property.elementsType }}>{% endif ~%}
+     */
+{%- endmacro -%}
+
+{%- macro getMethod(property) %}
+    public function get{{ property.camelCaseName[:1]|upper ~ property.camelCaseName[1:] }}(): {{ property.nullable ? '?' }}{{ property.type }}
+    {
+        return $this->{{ property.camelCaseName }};
+    }
+{% endmacro -%}
+
+{% macro getMethodDocBlock(property) %}
+    /**
+{% if property.type == 'array' %}
+     * @return array<{{ property.elementsType }}>
+{% else %}
+     * @return {{ property.type }}{{ property.nullable ? '|null' }}
+{% endif %}
+{% if property.deprecationDescription is not null %}
+     *
+     * @deprecated {{ property.deprecationDescription }}
+{% endif %}
+     */
+{%- endmacro %}
+
+{%- macro setMethod(property) %}
+    public function set{{ property.camelCaseName[:1]|upper ~ property.camelCaseName[1:] }}({{ property.nullable ? '?' }}{{ property.type }} ${{ property.camelCaseName }}): self
+    {
+        $this->{{ property.camelCaseName }} = ${{ property.camelCaseName }};
+
+        return $this;
+    }
+{% endmacro -%}
+
+{%- macro setMethodDocBlock(property) %}
+    /**
+{% if property.type == 'array' %}
+     * @param array<{{ property.elementsType }}> ${{ property.camelCaseName }}
+{% else %}
+     * @param {{ property.type }}{{ property.nullable ? '|null' }} ${{ property.camelCaseName }}
+{% endif %}
+     *
+     * @return $this
+{% if property.deprecationDescription is not null %}
+     *
+     * @deprecated {{ property.deprecationDescription }}
+{% endif %}
+     */
+{%- endmacro -%}
+
+{%- macro arrayAddMethod(property) %}
+    public function add{{ property.camelCaseSingularName[:1]|upper ~ property.camelCaseSingularName[1:] }}({{ property.elementsType }} ${{ property.camelCaseSingularName }}): self
+    {
+        $this->{{ property.camelCaseName }}[] = ${{ property.camelCaseSingularName }};
+
+        return $this;
+    }
+{%- endmacro -%}
+
+{%- macro arrayAddMethodDocBlock(property) %}
+    /**
+     * @param {{ property.elementsType }} ${{ property.camelCaseSingularName }}
+     *
+     * @return $this
+{% if property.deprecationDescription is not null %}
+     *
+     * @deprecated {{ property.deprecationDescription }}
+{% endif %}
+     */
+{%- endmacro -%}

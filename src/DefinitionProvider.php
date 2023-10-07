@@ -33,13 +33,7 @@ class DefinitionProvider
 
             $classProperties = [];
             foreach ($definition['properties'] as $property) {
-                $classProperties[] = [
-                    'type' => $property['type'],
-                    'camelCaseName' => $property['name'],
-                    'nullable' => $property['nullable'] ?? false,
-                    'description' => $property['description'] ?? null,
-                    'deprecationDescription' => $property['deprecationDescription'] ?? null,
-                ];
+                $classProperties[] = $this->processProperty($property);
             }
 
             $classTransfer['properties'] = $classProperties;
@@ -47,5 +41,43 @@ class DefinitionProvider
         }
 
         return $tranfers;
+    }
+
+    /**
+     * @param array<string,mixed> $property
+     * @return array<string,mixed>
+     */
+    private function processProperty(array $property): array
+    {
+        if (str_ends_with($property['type'], '[]')) {
+            return $this->processArrayType($property);
+        }
+
+        return [
+            'type' => $property['type'],
+            'camelCaseName' => $property['name'],
+            'nullable' => $property['nullable'] ?? false,
+            'description' => $property['description'] ?? null,
+            'deprecationDescription' => $property['deprecationDescription'] ?? null,
+        ];
+    }
+
+    /**
+     * @param array<string,mixed> $property
+     * @return array<string,mixed>
+     */
+    private function processArrayType(array $property): array
+    {
+        $elementsType = substr($property['type'], 0, -2);
+
+        return [
+            'type' => 'array',
+            'elementsType' => $elementsType,
+            'camelCaseName' => $property['name'],
+            'camelCaseSingularName' => $property['singular'],
+            'nullable' => $property['nullable'] ?? false,
+            'description' => $property['description'] ?? null,
+            'deprecationDescription' => $property['deprecationDescription'] ?? null,
+        ];
     }
 }

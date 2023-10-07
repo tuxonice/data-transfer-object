@@ -5,12 +5,11 @@ namespace Tlab\Tests\Unit;
 use PHPUnit\Framework\TestCase;
 use Tlab\TransferObjects\DefinitionProvider;
 
-
 class DefinitionProviderTest extends TestCase
 {
     public function testProvide(): void
     {
-        $definitionProvider = new DefinitionProvider(dirname(__DIR__).'/Data', 'TestNamespace');
+        $definitionProvider = new DefinitionProvider(dirname(__DIR__) . '/Data', 'TestNamespace');
         $definitionProvider->provide();
 
         self::assertEquals([
@@ -133,7 +132,9 @@ class DefinitionProviderTest extends TestCase
                         'deprecationDescription' => 'isActive property is deprecated',
                     ],
                     [
-                        'type' => 'string',
+                        'type' => 'array',
+                        'elementsType' => 'string',
+                        'camelCaseSingularName' => 'tag',
                         'camelCaseName' => 'tags',
                         'nullable' => false,
                         'description' => null,

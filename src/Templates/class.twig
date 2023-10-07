@@ -1,4 +1,5 @@
-<?php
+{% import "macros.twig" as macro %}
+{{ true ? '<?php' }}
 
 namespace {{ namespace }};
 
@@ -15,32 +16,17 @@ use Tlab\TransferObjects\AbstractTransfer;
 class {{ className }} extends {{ abstractClass }}
 {
 {% for property in properties %}
-    private {{ property.nullable ? '?' }}{{ property.type }} ${{ property.camelCaseName }};
-{% if not loop.last %}
-
-{% endif %}
-{% endfor %}
-
+{{ macro.propertyDocBlock(property) }}
+{{ macro.property(property) }}
+{% endfor -%}
 {% for property in properties %}
-    {% if property.deprecationDescription is not null -%}
-     /** @deprecated {{ property.deprecationDescription }} */
-    {% endif -%}
-    public function get{{ property.camelCaseName[:1]|upper ~ property.camelCaseName[1:] }}(): {{ property.nullable ? '?' }}{{ property.type }}
-    {
-        return $this->{{ property.camelCaseName }};
-    }
-
-    {% if property.deprecationDescription is not null -%}
-        /** @deprecated {{ property.deprecationDescription }} */
-    {% endif -%}
-    public function set{{ property.camelCaseName[:1]|upper ~ property.camelCaseName[1:] }}({{ property.nullable ? '?' }}{{ property.type }} ${{ property.camelCaseName }}): self
-    {
-        $this->{{ property.camelCaseName }} = ${{ property.camelCaseName }};
-
-        return $this;
-    }
-{% if not loop.last %}
-
+{{ macro.getMethodDocBlock(property) }}
+{{ macro.getMethod(property) }}
+{{ macro.setMethodDocBlock(property) }}
+{{ macro.setMethod(property) }}
+{% if property.type == 'array' %}
+{{ macro.arrayAddMethodDocBlock(property) }}
+{{ macro.arrayAddMethod(property) }}
 {% endif %}
 {% endfor %}
 }

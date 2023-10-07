@@ -61,7 +61,8 @@
         },
         {
           "name": "tags",
-          "type": "string"
+          "type": "string[]",
+          "singular": "tag"
         }
       ]
     }
