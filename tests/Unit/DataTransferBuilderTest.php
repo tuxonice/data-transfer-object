@@ -17,10 +17,10 @@ class DataTransferBuilderTest extends TestCase
 
     public function tearDown(): void
     {
-//        $pattern = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Generated' . DIRECTORY_SEPARATOR . '*.php';
-//        foreach (glob($pattern) as $filename) {
-//            unlink($filename);
-//        }
+        $pattern = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Generated' . DIRECTORY_SEPARATOR . '*.php';
+        foreach (glob($pattern) as $filename) {
+            unlink($filename);
+        }
         parent::tearDown();
     }
 
