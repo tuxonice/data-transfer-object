@@ -41,6 +41,15 @@ class DefinitionProviderTest extends TestCase
                         'description' => null,
                         'deprecationDescription' => null,
                     ],
+                    [
+                        'type' => 'array',
+                        'elementsType' => 'CategoryTransfer',
+                        'camelCaseName' => 'categories',
+                        'camelCaseSingularName' => 'category',
+                        'nullable' => false,
+                        'description' => null,
+                        'deprecationDescription' => null,
+                    ],
                 ]
             ],
             [

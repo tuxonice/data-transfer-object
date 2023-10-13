@@ -26,6 +26,11 @@ class ProductTransfer extends AbstractTransfer
     private float $price;
 
     /**
+     * @var array<CategoryTransfer>
+     */
+    private array $categories = [];
+
+    /**
      * @return string
      */
     public function getSku(): string
@@ -85,4 +90,35 @@ class ProductTransfer extends AbstractTransfer
         return $this;
     }
 
+    /**
+     * @return array<CategoryTransfer>
+     */
+    public function getCategories(): array
+    {
+        return $this->categories;
+    }
+
+    /**
+     * @param array<CategoryTransfer> $categories
+     *
+     * @return $this
+     */
+    public function setCategories(array $categories): self
+    {
+        $this->categories = $categories;
+
+        return $this;
+    }
+
+    /**
+     * @param CategoryTransfer $category
+     *
+     * @return $this
+     */
+    public function addCategory(CategoryTransfer $category): self
+    {
+        $this->categories[] = $category;
+
+        return $this;
+    }
 }

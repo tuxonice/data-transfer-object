@@ -17,6 +17,11 @@
           "name": "price",
           "type": "float",
           "nullable": false
+        },
+        {
+          "name": "categories",
+          "type": "Category[]",
+          "singular": "category"
         }
       ]
     },
