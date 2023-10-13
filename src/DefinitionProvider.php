@@ -70,8 +70,8 @@ class DefinitionProvider
     {
         $elementsType = substr($property['type'], 0, -2);
 
-        if(!in_array($elementsType, ['string', 'int', 'float'])) {
-            $elementsType = $elementsType.'Transfer';
+        if (!in_array($elementsType, ['string', 'int', 'float'])) {
+            $elementsType = $elementsType . 'Transfer';
         }
 
         return [
