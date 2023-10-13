@@ -2,8 +2,12 @@
 
 namespace Tlab\TransferObjects;
 
+use Tlab\TransferObjects\Exceptions\DefinitionException;
+
 class DefinitionProvider
 {
+    private const NATIVE_TYPES = ['string', 'int', 'float', 'bool'];
+
     public function __construct(
         private readonly string $definitionPath,
         private readonly string $namespace,
@@ -15,32 +19,46 @@ class DefinitionProvider
      */
     public function provide(): array
     {
+        $schemaValidator = new SchemaValidator();
         $definitions = [];
         foreach (glob($this->definitionPath . DIRECTORY_SEPARATOR . '*.json') as $filename) {
+            $errors = [];
+            if (!$schemaValidator->validate((string)file_get_contents($filename), $errors)) {
+                throw new DefinitionException('Invalid definition file: ' . $filename);
+            }
             $decodeFile = json_decode((string)file_get_contents($filename), true);
             $definitions = array_merge($decodeFile['transfers'], $definitions);
         }
 
-        $tranfers = [];
+        $transfers = [];
         foreach ($definitions as $definition) {
+            $useNamespaces = [
+                'Tlab\TransferObjects\AbstractTransfer'
+            ];
             $classTransfer = [
                 'namespace' => $this->namespace,
                 'className' => $definition['name'] . 'Transfer',
                 'abstractClass' => 'AbstractTransfer',
-                'description' => $definition['description'] ?? null,
                 'deprecationDescription' => $definition['deprecationDescription'] ?? null,
             ];
 
             $classProperties = [];
             foreach ($definition['properties'] as $property) {
+                if (isset($property['namespace'])) {
+                    $useNamespaces[] = trim($property['namespace'], '\\');
+                }
+
                 $classProperties[] = $this->processProperty($property);
             }
 
+            $useNamespaces = array_unique($useNamespaces);
+            sort($useNamespaces, SORT_STRING);
+            $classTransfer['useNamespaces'] = $useNamespaces;
             $classTransfer['properties'] = $classProperties;
-            $tranfers[] = $classTransfer;
+            $transfers[] = $classTransfer;
         }
 
-        return $tranfers;
+        return $transfers;
     }
 
     /**
@@ -53,11 +71,14 @@ class DefinitionProvider
             return $this->processArrayType($property);
         }
 
+        if (!in_array($property['type'], self::NATIVE_TYPES)) {
+            return $this->processNonNativeType($property);
+        }
+
         return [
             'type' => $property['type'],
             'camelCaseName' => $property['name'],
             'nullable' => $property['nullable'] ?? false,
-            'description' => $property['description'] ?? null,
             'deprecationDescription' => $property['deprecationDescription'] ?? null,
         ];
     }
@@ -70,8 +91,16 @@ class DefinitionProvider
     {
         $elementsType = substr($property['type'], 0, -2);
 
-        if (!in_array($elementsType, ['string', 'int', 'float'])) {
-            $elementsType = $elementsType . 'Transfer';
+        if (!in_array($elementsType, self::NATIVE_TYPES)) {
+            return [
+                'type' => 'array',
+                'elementsType' => $elementsType,
+                'camelCaseName' => $property['name'],
+                'camelCaseSingularName' => $property['singular'],
+                'namespace' => isset($property['namespace']) ? trim($property['namespace'], '\\') : null,
+                'nullable' => $property['nullable'] ?? false,
+                'deprecationDescription' => $property['deprecationDescription'] ?? null,
+            ];
         }
 
         return [
@@ -80,7 +109,22 @@ class DefinitionProvider
             'camelCaseName' => $property['name'],
             'camelCaseSingularName' => $property['singular'],
             'nullable' => $property['nullable'] ?? false,
-            'description' => $property['description'] ?? null,
+            'deprecationDescription' => $property['deprecationDescription'] ?? null,
+        ];
+    }
+
+    /**
+     * @param array<string,string|null> $property
+     *
+     * @return array<string,string|null>
+     */
+    private function processNonNativeType(array $property): array
+    {
+        return [
+            'type' => $property['type'],
+            'camelCaseName' => $property['name'],
+            'namespace' => isset($property['namespace']) ? trim($property['namespace'], '\\') : null,
+            'nullable' => $property['nullable'] ?? false,
             'deprecationDescription' => $property['deprecationDescription'] ?? null,
         ];
     }

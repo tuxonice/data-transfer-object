@@ -30,9 +30,10 @@ abstract class AbstractTransfer implements TransferInterface
 
     /**
      * @param array<string,mixed> $data
-     * @return TransferInterface
+     *
+     * @return static
      */
-    public static function fromArray(array $data): TransferInterface
+    public static function fromArray(array $data): static
     {
         $transfer = new static();
         foreach ($data as $key => $value) {

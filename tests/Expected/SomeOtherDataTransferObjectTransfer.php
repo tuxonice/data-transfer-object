@@ -28,11 +28,6 @@ class SomeOtherDataTransferObjectTransfer extends AbstractTransfer
     private float $price;
 
     /**
-     * @var bool
-     */
-    private bool $isActive;
-
-    /**
      * @var array<string>
      */
     private array $tags = [];
@@ -93,30 +88,6 @@ class SomeOtherDataTransferObjectTransfer extends AbstractTransfer
     public function setPrice(float $price): self
     {
         $this->price = $price;
-
-        return $this;
-    }
-
-    /**
-     * @return bool
-     *
-     * @deprecated isActive property is deprecated
-     */
-    public function getIsActive(): bool
-    {
-        return $this->isActive;
-    }
-
-    /**
-     * @param bool $isActive
-     *
-     * @return $this
-     *
-     * @deprecated isActive property is deprecated
-     */
-    public function setIsActive(bool $isActive): self
-    {
-        $this->isActive = $isActive;
 
         return $this;
     }

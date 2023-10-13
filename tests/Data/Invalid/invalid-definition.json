@@ -8,27 +8,17 @@
           "type": "string"
         },
         {
-          "name": "name",
+          "name": "some-name",
           "type": "string",
           "nullable": true
         },
         {
-          "name": "price",
-          "type": "float"
+          "name": "price"
         },
         {
           "name": "categories",
           "type": "CategoryTransfer[]",
           "singular": "category"
-        }
-      ]
-    },
-    {
-      "name": "Category",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string"
         }
       ]
     }

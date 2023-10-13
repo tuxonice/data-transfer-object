@@ -15,30 +15,29 @@ class DefinitionProviderTest extends TestCase
         self::assertEquals([
             [
                 'namespace' => 'TestNamespace',
+                'useNamespaces' => [
+                    'Tlab\TransferObjects\AbstractTransfer',
+                ],
                 'className' => 'ProductTransfer',
                 'abstractClass' => 'AbstractTransfer',
-                'description' => null,
                 'deprecationDescription' => null,
                 'properties' => [
                     [
                         'type' => 'string',
                         'camelCaseName' => 'sku',
                         'nullable' => false,
-                        'description' => null,
                         'deprecationDescription' => null,
                     ],
                     [
                         'type' => 'string',
                         'camelCaseName' => 'name',
                         'nullable' => true,
-                        'description' => null,
                         'deprecationDescription' => null,
                     ],
                     [
                         'type' => 'float',
                         'camelCaseName' => 'price',
                         'nullable' => false,
-                        'description' => null,
                         'deprecationDescription' => null,
                     ],
                     [
@@ -46,8 +45,8 @@ class DefinitionProviderTest extends TestCase
                         'elementsType' => 'CategoryTransfer',
                         'camelCaseName' => 'categories',
                         'camelCaseSingularName' => 'category',
+                        'namespace' => '',
                         'nullable' => false,
-                        'description' => null,
                         'deprecationDescription' => null,
                     ],
                 ]
@@ -55,15 +54,16 @@ class DefinitionProviderTest extends TestCase
             [
                 'namespace' => 'TestNamespace',
                 'className' => 'CategoryTransfer',
+                'useNamespaces' => [
+                    'Tlab\TransferObjects\AbstractTransfer',
+                ],
                 'abstractClass' => 'AbstractTransfer',
-                'description' => null,
                 'deprecationDescription' => null,
                 'properties' => [
                     [
                         'type' => 'string',
                         'camelCaseName' => 'name',
                         'nullable' => false,
-                        'description' => null,
                         'deprecationDescription' => null,
                     ],
                 ]
@@ -72,35 +72,65 @@ class DefinitionProviderTest extends TestCase
                 'namespace' => 'TestNamespace',
                 'className' => 'CustomerTransfer',
                 'abstractClass' => 'AbstractTransfer',
-                'description' => 'DTO description',
+                'useNamespaces' => [
+                    'Acme\Environment',
+                    'DateTime',
+                    'Tlab\TransferObjects\AbstractTransfer',
+                ],
                 'deprecationDescription' => 'This class is deprecated',
                 'properties' => [
                     [
                         'type' => 'string',
                         'camelCaseName' => 'email',
                         'nullable' => false,
-                        'description' => 'The customer email',
                         'deprecationDescription' => null,
+                    ],
+                    [
+                        'type' => 'CategoryTransfer',
+                        'camelCaseName' => 'category',
+                        'nullable' => false,
+                        'deprecationDescription' => null,
+                        'namespace' => '',
                     ],
                     [
                         'type' => 'string',
                         'camelCaseName' => 'firstName',
                         'nullable' => false,
-                        'description' => 'The customer first name',
                         'deprecationDescription' => null,
                     ],
                     [
                         'type' => 'string',
                         'camelCaseName' => 'lastName',
                         'nullable' => true,
-                        'description' => 'The customer last name',
+                        'deprecationDescription' => null,
+                    ],
+                    [
+                        'type' => 'DateTime',
+                        'camelCaseName' => 'birthDate',
+                        'nullable' => false,
+                        'deprecationDescription' => null,
+                        'namespace' => 'DateTime',
+                    ],
+                    [
+                        'type' => 'array',
+                        'camelCaseName' => 'timeTables',
+                        'nullable' => false,
+                        'deprecationDescription' => null,
+                        'namespace' => 'DateTime',
+                        'elementsType' => 'DateTime',
+                        'camelCaseSingularName' => 'timeTable',
+                    ],
+                    [
+                        'type' => 'Environment',
+                        'camelCaseName' => 'someOtherField',
+                        'namespace' => 'Acme\Environment',
+                        'nullable' => true,
                         'deprecationDescription' => null,
                     ],
                     [
                         'type' => 'bool',
                         'camelCaseName' => 'isGuest',
                         'nullable' => false,
-                        'description' => 'Is a guest customer',
                         'deprecationDescription' => 'isGuest property is deprecated',
                     ]
                 ]
@@ -109,36 +139,28 @@ class DefinitionProviderTest extends TestCase
                 'namespace' => 'TestNamespace',
                 'className' => 'SomeOtherDataTransferObjectTransfer',
                 'abstractClass' => 'AbstractTransfer',
-                'description' => 'DTO description',
+                'useNamespaces' => [
+                    'Tlab\TransferObjects\AbstractTransfer',
+                ],
                 'deprecationDescription' => 'This class is deprecated',
                 'properties' => [
                     [
                         'type' => 'int',
                         'camelCaseName' => 'id',
                         'nullable' => false,
-                        'description' => 'An integer field',
                         'deprecationDescription' => null,
                     ],
                     [
                         'type' => 'string',
                         'camelCaseName' => 'name',
                         'nullable' => true,
-                        'description' => 'A string field',
                         'deprecationDescription' => null,
                     ],
                     [
                         'type' => 'float',
                         'camelCaseName' => 'price',
                         'nullable' => false,
-                        'description' => 'A float field',
                         'deprecationDescription' => null,
-                    ],
-                    [
-                        'type' => 'bool',
-                        'camelCaseName' => 'isActive',
-                        'nullable' => false,
-                        'description' => 'A bool field',
-                        'deprecationDescription' => 'isActive property is deprecated',
                     ],
                     [
                         'type' => 'array',
@@ -146,9 +168,8 @@ class DefinitionProviderTest extends TestCase
                         'camelCaseSingularName' => 'tag',
                         'camelCaseName' => 'tags',
                         'nullable' => false,
-                        'description' => null,
                         'deprecationDescription' => null,
-                    ]
+                    ],
                 ]
             ]
         ], $definitionProvider->provide());

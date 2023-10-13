@@ -3,8 +3,10 @@
 namespace Tlab\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
+use Tlab\Tests\Generated\CategoryTransfer;
 use Tlab\Tests\Generated\ProductTransfer;
 use Tlab\TransferObjects\DataTransferBuilder;
+use Tlab\TransferObjects\Exceptions\DefinitionException;
 
 class DataTransferBuilderTest extends TestCase
 {
@@ -58,12 +60,29 @@ class DataTransferBuilderTest extends TestCase
             'name' => 'test-product-name',
             'sku' => 'test-sku',
             'price' => 10.50,
+            'categories' => [
+                (new CategoryTransfer())->setName('test-category')
+            ]
         ];
 
         $productTransfer = ProductTransfer::fromArray($data);
-        self::assertEquals($productTransfer->getName(), 'test-product-name');
-        self::assertEquals($productTransfer->getSku(), 'test-sku');
-        self::assertEquals($productTransfer->getPrice(), 10.50);
+        self::assertEquals('test-product-name', $productTransfer->getName());
+        self::assertEquals('test-sku', $productTransfer->getSku());
+        self::assertEquals(10.50, $productTransfer->getPrice());
+        self::assertEquals([
+            (new CategoryTransfer())->setName('test-category')
+        ], $productTransfer->getCategories());
+    }
+
+    public function testBuildTransferWithInvalidDefinitionWillThrowException(): void
+    {
+        $this->expectException(DefinitionException::class);
+        $dataTransferBuilder = new DataTransferBuilder(
+            dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Data/Invalid',
+            dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Generated',
+            'Tlab\Tests\Generated'
+        );
+        $dataTransferBuilder->build();
     }
 
     private function generateTransfers(): void

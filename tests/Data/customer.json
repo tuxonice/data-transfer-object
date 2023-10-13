@@ -2,62 +2,66 @@
   "transfers": [
     {
       "name": "Customer",
-      "description": "DTO description",
       "deprecationDescription": "This class is deprecated",
       "properties": [
         {
           "name": "email",
           "type": "string",
-          "nullable": false,
-          "description": "The customer email"
+          "nullable": false
+        },
+        {
+          "name": "category",
+          "type": "CategoryTransfer"
         },
         {
           "name": "firstName",
-          "type": "string",
-          "nullable": false,
-          "description": "The customer first name"
+          "type": "string"
         },
         {
           "name": "lastName",
           "type": "string",
-          "nullable": true,
-          "description": "The customer last name"
+          "nullable": true
+        },
+        {
+          "name": "birthDate",
+          "type": "DateTime",
+          "namespace": "DateTime"
+        },
+        {
+          "name": "timeTables",
+          "type": "DateTime[]",
+          "singular": "timeTable",
+          "namespace": "DateTime"
+        },
+        {
+          "name": "someOtherField",
+          "type": "Environment",
+          "namespace": "\\Acme\\Environment\\",
+          "nullable": true
         },
         {
           "name": "isGuest",
           "type": "bool",
-          "description": "Is a guest customer",
           "deprecationDescription": "isGuest property is deprecated"
         }
       ]
     },
     {
       "name": "SomeOtherDataTransferObject",
-      "description": "DTO description",
       "deprecationDescription": "This class is deprecated",
       "properties": [
         {
           "name": "id",
-          "type": "int",
-          "nullable": false,
-          "description": "An integer field"
+          "type": "int"
         },
         {
           "name": "name",
           "type": "string",
-          "nullable": true,
-          "description": "A string field"
+          "nullable": true
         },
         {
           "name": "price",
-          "type": "float",
-          "description": "A float field"
-        },
-        {
-          "name": "isActive",
-          "type": "bool",
-          "description": "A bool field",
-          "deprecationDescription": "isActive property is deprecated"
+          "type": "float"
         },
         {
           "name": "tags",

@@ -2,6 +2,8 @@
 
 namespace Tlab\Tests\Generated;
 
+use Acme\Environment;
+use DateTime;
 use Tlab\TransferObjects\AbstractTransfer;
 
 /**
@@ -18,6 +20,11 @@ class CustomerTransfer extends AbstractTransfer
     private string $email;
 
     /**
+     * @var CategoryTransfer
+     */
+    private CategoryTransfer $category;
+
+    /**
      * @var string
      */
     private string $firstName;
@@ -26,6 +33,21 @@ class CustomerTransfer extends AbstractTransfer
      * @var string|null
      */
     private ?string $lastName;
+
+    /**
+     * @var DateTime
+     */
+    private DateTime $birthDate;
+
+    /**
+     * @var array<DateTime>
+     */
+    private array $timeTables = [];
+
+    /**
+     * @var Environment|null
+     */
+    private ?Environment $someOtherField;
 
     /**
      * @var bool
@@ -48,6 +70,26 @@ class CustomerTransfer extends AbstractTransfer
     public function setEmail(string $email): self
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * @return CategoryTransfer
+     */
+    public function getCategory(): CategoryTransfer
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param CategoryTransfer $category
+     *
+     * @return $this
+     */
+    public function setCategory(CategoryTransfer $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }
@@ -88,6 +130,77 @@ class CustomerTransfer extends AbstractTransfer
     public function setLastName(?string $lastName): self
     {
         $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getBirthDate(): DateTime
+    {
+        return $this->birthDate;
+    }
+
+    /**
+     * @param DateTime $birthDate
+     *
+     * @return $this
+     */
+    public function setBirthDate(DateTime $birthDate): self
+    {
+        $this->birthDate = $birthDate;
+
+        return $this;
+    }
+
+    /**
+     * @return array<DateTime>
+     */
+    public function getTimeTables(): array
+    {
+        return $this->timeTables;
+    }
+
+    /**
+     * @param array<DateTime> $timeTables
+     *
+     * @return $this
+     */
+    public function setTimeTables(array $timeTables): self
+    {
+        $this->timeTables = $timeTables;
+
+        return $this;
+    }
+
+    /**
+     * @param DateTime $timeTable
+     *
+     * @return $this
+     */
+    public function addTimeTable(DateTime $timeTable): self
+    {
+        $this->timeTables[] = $timeTable;
+
+        return $this;
+    }
+    /**
+     * @return Environment|null
+     */
+    public function getSomeOtherField(): ?Environment
+    {
+        return $this->someOtherField;
+    }
+
+    /**
+     * @param Environment|null $someOtherField
+     *
+     * @return $this
+     */
+    public function setSomeOtherField(?Environment $someOtherField): self
+    {
+        $this->someOtherField = $someOtherField;
 
         return $this;
     }

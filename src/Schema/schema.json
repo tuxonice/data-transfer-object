@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Data transfer objects definition",
+  "type": "object",
+  "properties": {
+    "transfers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Transfer Object Name"
+          },
+          "deprecationDescription": {
+            "type": "string",
+            "description": "Class deprecation description"
+          },
+          "properties": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "pattern": "^([a-z])+([A-Z][a-z]+)*$",
+                  "description": "Class property name in camelcase"
+                },
+                "type": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z]+(\\[\\])?$",
+                  "description": "Class property type"
+                },
+                "namespace": {
+                  "type": "string",
+                  "pattern": "^(\\\\)?[A-Za-z]+(\\\\[A-Za-z]+)*(\\\\)?$",
+                  "description": "Namespace for the type, if applicable"
+                },
+                "nullable": {
+                  "type": "boolean",
+                  "description": "If class property can be nullable"
+                },
+                "deprecationDescription": {
+                  "type": "string",
+                  "description": "Class property deprecation description"
+                },
+                "singular": {
+                  "type": "string",
+                  "pattern": "(^[a-z]|[A-Z0-9])[a-z]*$",
+                  "description": "Singular name of the property for array types"
+                }
+              },
+              "required": [
+                "name",
+                "type"
+              ]
+            }
+          }
+        },
+        "required": [
+          "name",
+          "properties"
+        ]
+      }
+    }
+  },
+  "required": [
+    "transfers"
+  ]
+}

@@ -3,7 +3,9 @@
 
 namespace {{ namespace }};
 
-use Tlab\TransferObjects\AbstractTransfer;
+{% for useNamespace in useNamespaces %}
+use {{ useNamespace }};
+{% endfor %}
 
 /**
  * !!! THIS TRANSFER CLASS FILE IS AUTO-GENERATED, CHANGES WILL BREAK YOUR PROJECT
