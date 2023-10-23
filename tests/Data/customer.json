@@ -2,17 +2,7 @@
   "transfers": [
     {
       "name": "Customer",
-      "deprecationDescription": "This class is deprecated",
       "properties": [
-        {
-          "name": "email",
-          "type": "string",
-          "nullable": false
-        },
-        {
-          "name": "category",
-          "type": "CategoryTransfer"
-        },
         {
           "name": "firstName",
           "type": "string"
@@ -23,50 +13,18 @@
           "nullable": true
         },
         {
+          "name": "email",
+          "type": "string",
+          "nullable": false
+        },
+        {
           "name": "birthDate",
           "type": "DateTime",
           "namespace": "DateTime"
         },
         {
-          "name": "timeTables",
-          "type": "DateTime[]",
-          "singular": "timeTable",
-          "namespace": "DateTime"
-        },
-        {
-          "name": "someOtherField",
-          "type": "Environment",
-          "namespace": "\\Acme\\Environment\\",
-          "nullable": true
-        },
-        {
-          "name": "isGuest",
-          "type": "bool",
-          "deprecationDescription": "isGuest property is deprecated"
-        }
-      ]
-    },
-    {
-      "name": "SomeOtherDataTransferObject",
-      "deprecationDescription": "This class is deprecated",
-      "properties": [
-        {
-          "name": "id",
-          "type": "int"
-        },
-        {
-          "name": "name",
-          "type": "string",
-          "nullable": true
-        },
-        {
-          "name": "price",
-          "type": "float"
-        },
-        {
-          "name": "tags",
-          "type": "string[]",
-          "singular": "tag"
+          "name": "isActive",
+          "type": "bool"
         }
       ]
     }

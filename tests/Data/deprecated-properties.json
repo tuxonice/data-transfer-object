@@ -1,0 +1,28 @@
+{
+  "transfers": [
+    {
+      "name": "DeprecatedProperty",
+      "properties": [
+        {
+          "name": "id",
+          "type": "int"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "price",
+          "type": "float",
+          "deprecationDescription": "This field is deprecated"
+        },
+        {
+          "name": "tags",
+          "type": "string[]",
+          "singular": "tag"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "transfers": [
+    {
+      "name": "Order",
+      "properties": [
+        {
+          "name": "id",
+          "type": "int"
+        },
+        {
+          "name": "customer",
+          "type": "CustomerTransfer"
+        },
+        {
+          "name": "total",
+          "type": "float"
+        },
+        {
+          "name": "orderItems",
+          "type": "orderItemTransfer[]",
+          "singular": "orderItem"
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "namespace": "DateTime"
+        }
+      ]
+    },
+    {
+      "name": "OrderItem",
+      "properties": [
+        {
+          "name": "id",
+          "type": "int"
+        },
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "price",
+          "type": "float"
+        },
+        {
+          "name": "quantity",
+          "type": "int"
+        }
+      ]
+    }
+  ]
+}

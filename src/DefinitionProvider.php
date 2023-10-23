@@ -27,7 +27,7 @@ class DefinitionProvider
                 throw new DefinitionException('Invalid definition file: ' . $filename);
             }
             $decodeFile = json_decode((string)file_get_contents($filename), true);
-            $definitions = array_merge($decodeFile['transfers'], $definitions);
+            $definitions = array_merge($definitions, $decodeFile['transfers']);
         }
 
         $transfers = [];

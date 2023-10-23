@@ -7,10 +7,8 @@ use Tlab\TransferObjects\AbstractTransfer;
 /**
  * !!! THIS TRANSFER CLASS FILE IS AUTO-GENERATED, CHANGES WILL BREAK YOUR PROJECT
  * !!! DO NOT CHANGE ANYTHING IN THIS FILE
- *
- * @deprecated This class is deprecated
  */
-class SomeOtherDataTransferObjectTransfer extends AbstractTransfer
+class OrderItemTransfer extends AbstractTransfer
 {
     /**
      * @var int
@@ -18,9 +16,9 @@ class SomeOtherDataTransferObjectTransfer extends AbstractTransfer
     private int $id;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private ?string $name;
+    private string $name;
 
     /**
      * @var float
@@ -28,9 +26,9 @@ class SomeOtherDataTransferObjectTransfer extends AbstractTransfer
     private float $price;
 
     /**
-     * @var array<string>
+     * @var int
      */
-    private array $tags = [];
+    private int $quantity;
 
     /**
      * @return int
@@ -53,19 +51,19 @@ class SomeOtherDataTransferObjectTransfer extends AbstractTransfer
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
-     * @param string|null $name
+     * @param string $name
      *
      * @return $this
      */
-    public function setName(?string $name): self
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -93,34 +91,23 @@ class SomeOtherDataTransferObjectTransfer extends AbstractTransfer
     }
 
     /**
-     * @return array<string>
+     * @return int
      */
-    public function getTags(): array
+    public function getQuantity(): int
     {
-        return $this->tags;
+        return $this->quantity;
     }
 
     /**
-     * @param array<string> $tags
+     * @param int $quantity
      *
      * @return $this
      */
-    public function setTags(array $tags): self
+    public function setQuantity(int $quantity): self
     {
-        $this->tags = $tags;
+        $this->quantity = $quantity;
 
         return $this;
     }
 
-    /**
-     * @param string $tag
-     *
-     * @return $this
-     */
-    public function addTag(string $tag): self
-    {
-        $this->tags[] = $tag;
-
-        return $this;
-    }
 }

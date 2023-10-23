@@ -11,7 +11,7 @@ You can install the package via composer:
 composer require tuxonice/data-transfer-object
 ```
 
-## Usage
+## Setup
 
 The goal of this package is to create data transfer objects from json definitions as easy as possible. 
 
@@ -61,7 +61,52 @@ class GenerateTransferCommand extends Command
     }
 }
 ```
-4. Define the dto through the definition files
+4. For Laravel projects:
+
+```bash
+php artisan make:command GenerateTransfer
+```
+
+```php
+ 
+namespace App\Console\Commands;
+ 
+use Illuminate\Console\Command;
+use Tlab\TransferObjects\DataTransferBuilder;
+ 
+class GenerateTransfer extends Command
+{
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'transfer:generate';
+ 
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Generate data transfer objects';
+ 
+    /**
+     * Execute the console command.
+     */
+    public function handle(): void
+    {
+        $dataTransferBuilder = new DataTransferBuilder(
+            dirname(__DIR__) . '/dto-definitions/',
+            dirname(__DIR__) . '/DataTransferObjects/',
+            'Acme\\DataTransferObjects',
+        );
+        $dataTransferBuilder->build();
+    }
+}
+
+```
+
+5. Define the dto through the definition files
 
 ```src/dto-definitions/customer.json```
 
@@ -72,15 +117,6 @@ class GenerateTransferCommand extends Command
       "name": "Customer",
       "properties": [
         {
-          "name": "email",
-          "type": "string",
-          "nullable": false
-        },
-        {
-          "name": "category",
-          "type": "CategoryTransfer"
-        },
-        {
           "name": "firstName",
           "type": "string"
         },
@@ -90,50 +126,18 @@ class GenerateTransferCommand extends Command
           "nullable": true
         },
         {
+          "name": "email",
+          "type": "string",
+          "nullable": false
+        },
+        {
           "name": "birthDate",
           "type": "DateTime",
           "namespace": "DateTime"
         },
         {
-          "name": "timeTables",
-          "type": "DateTime[]",
-          "singular": "timeTable",
-          "namespace": "DateTime"
-        },
-        {
-          "name": "someOtherField",
-          "type": "Environment",
-          "namespace": "\\Acme\\Environment\\",
-          "nullable": true
-        },
-        {
-          "name": "isGuest",
-          "type": "bool",
-          "deprecationDescription": "isGuest property is deprecated"
-        }
-      ]
-    },
-    {
-      "name": "SomeOtherDataTransferObject",
-      "deprecationDescription": "This class is deprecated",
-      "properties": [
-        {
-          "name": "id",
-          "type": "int"
-        },
-        {
-          "name": "name",
-          "type": "string",
-          "nullable": true
-        },
-        {
-          "name": "price",
-          "type": "float"
-        },
-        {
-          "name": "tags",
-          "type": "string[]",
-          "singular": "tag"
+          "name": "isActive",
+          "type": "bool"
         }
       ]
     }
@@ -146,29 +150,17 @@ This definition will generate the following transfer classes:
 
 ```php
 
-namespace Tlab\Tests\Generated;
+namespace Acme\DataTransferObjects;
 
-use Acme\Environment;
 use DateTime;
 use Tlab\TransferObjects\AbstractTransfer;
 
 /**
  * !!! THIS TRANSFER CLASS FILE IS AUTO-GENERATED, CHANGES WILL BREAK YOUR PROJECT
  * !!! DO NOT CHANGE ANYTHING IN THIS FILE
- *
  */
 class CustomerTransfer extends AbstractTransfer
 {
-    /**
-     * @var string
-     */
-    private string $email;
-
-    /**
-     * @var CategoryTransfer
-     */
-    private CategoryTransfer $category;
-
     /**
      * @var string
      */
@@ -180,64 +172,19 @@ class CustomerTransfer extends AbstractTransfer
     private ?string $lastName;
 
     /**
+     * @var string
+     */
+    private string $email;
+
+    /**
      * @var DateTime
      */
     private DateTime $birthDate;
 
     /**
-     * @var array<DateTime>
-     */
-    private array $timeTables = [];
-
-    /**
-     * @var Environment|null
-     */
-    private ?Environment $someOtherField;
-
-    /**
      * @var bool
      */
-    private bool $isGuest;
-
-    /**
-     * @return string
-     */
-    public function getEmail(): string
-    {
-        return $this->email;
-    }
-
-    /**
-     * @param string $email
-     *
-     * @return $this
-     */
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    /**
-     * @return CategoryTransfer
-     */
-    public function getCategory(): CategoryTransfer
-    {
-        return $this->category;
-    }
-
-    /**
-     * @param CategoryTransfer $category
-     *
-     * @return $this
-     */
-    public function setCategory(CategoryTransfer $category): self
-    {
-        $this->category = $category;
-
-        return $this;
-    }
+    private bool $isActive;
 
     /**
      * @return string
@@ -280,6 +227,26 @@ class CustomerTransfer extends AbstractTransfer
     }
 
     /**
+     * @return string
+     */
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string $email
+     *
+     * @return $this
+     */
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
      * @return DateTime
      */
     public function getBirthDate(): DateTime
@@ -300,206 +267,21 @@ class CustomerTransfer extends AbstractTransfer
     }
 
     /**
-     * @return array<DateTime>
-     */
-    public function getTimeTables(): array
-    {
-        return $this->timeTables;
-    }
-
-    /**
-     * @param array<DateTime> $timeTables
-     *
-     * @return $this
-     */
-    public function setTimeTables(array $timeTables): self
-    {
-        $this->timeTables = $timeTables;
-
-        return $this;
-    }
-
-    /**
-     * @param DateTime $timeTable
-     *
-     * @return $this
-     */
-    public function addTimeTable(DateTime $timeTable): self
-    {
-        $this->timeTables[] = $timeTable;
-
-        return $this;
-    }
-    /**
-     * @return Environment|null
-     */
-    public function getSomeOtherField(): ?Environment
-    {
-        return $this->someOtherField;
-    }
-
-    /**
-     * @param Environment|null $someOtherField
-     *
-     * @return $this
-     */
-    public function setSomeOtherField(?Environment $someOtherField): self
-    {
-        $this->someOtherField = $someOtherField;
-
-        return $this;
-    }
-
-    /**
      * @return bool
-     *
-     * @deprecated isGuest property is deprecated
      */
-    public function getIsGuest(): bool
+    public function getIsActive(): bool
     {
-        return $this->isGuest;
+        return $this->isActive;
     }
 
     /**
-     * @param bool $isGuest
-     *
-     * @return $this
-     *
-     * @deprecated isGuest property is deprecated
-     */
-    public function setIsGuest(bool $isGuest): self
-    {
-        $this->isGuest = $isGuest;
-
-        return $this;
-    }
-
-}
-
-```
-
-```php
-
-namespace Tlab\Tests\Generated;
-
-use Tlab\TransferObjects\AbstractTransfer;
-
-/**
- * !!! THIS TRANSFER CLASS FILE IS AUTO-GENERATED, CHANGES WILL BREAK YOUR PROJECT
- * !!! DO NOT CHANGE ANYTHING IN THIS FILE
- *
- * @deprecated This class is deprecated
- */
-class SomeOtherDataTransferObjectTransfer extends AbstractTransfer
-{
-    /**
-     * @var int
-     */
-    private int $id;
-
-    /**
-     * @var string|null
-     */
-    private ?string $name;
-
-    /**
-     * @var float
-     */
-    private float $price;
-
-    /**
-     * @var array<string>
-     */
-    private array $tags = [];
-
-    /**
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
+     * @param bool $isActive
      *
      * @return $this
      */
-    public function setId(int $id): self
+    public function setIsActive(bool $isActive): self
     {
-        $this->id = $id;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string|null $name
-     *
-     * @return $this
-     */
-    public function setName(?string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getPrice(): float
-    {
-        return $this->price;
-    }
-
-    /**
-     * @param float $price
-     *
-     * @return $this
-     */
-    public function setPrice(float $price): self
-    {
-        $this->price = $price;
-
-        return $this;
-    }
-
-    /**
-     * @return array<string>
-     */
-    public function getTags(): array
-    {
-        return $this->tags;
-    }
-
-    /**
-     * @param array<string> $tags
-     *
-     * @return $this
-     */
-    public function setTags(array $tags): self
-    {
-        $this->tags = $tags;
-
-        return $this;
-    }
-
-    /**
-     * @param string $tag
-     *
-     * @return $this
-     */
-    public function addTag(string $tag): self
-    {
-        $this->tags[] = $tag;
+        $this->isActive = $isActive;
 
         return $this;
     }
