@@ -63,7 +63,7 @@ class SchemaValidatorTest extends TestCase
         self::assertFalse($result);
     }
 
-    public function testSchemaValidatorForArrayType(): void
+    public function testSchemaValidatorForArrayTypeWithSpaceBetweenBrackets(): void
     {
         $schemaValidator = new SchemaValidator();
 
@@ -79,6 +79,25 @@ class SchemaValidatorTest extends TestCase
 
         self::assertEquals([
             '/transfers/0/properties/0/type' => 'The string should match pattern: ^[A-Za-z]+(\[\])?$',
+        ], $errors);
+        self::assertFalse($result);
+    }
+
+    public function testSchemaValidatorForArrayTypeWithMissingSingularProperty(): void
+    {
+        $schemaValidator = new SchemaValidator();
+
+        $definition = $this->loadDefinition();
+        $definition['transfers'][0]['properties'][0] = [
+            'name' => 'tags',
+            'type' => 'string[]',
+        ];
+
+        $errors = [];
+        $result = $schemaValidator->validate(json_encode($definition), $errors);
+
+        self::assertEquals([
+            '/transfers/0/properties/0' => 'The required properties (singular) are missing',
         ], $errors);
         self::assertFalse($result);
     }

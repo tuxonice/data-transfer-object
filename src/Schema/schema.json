@@ -36,6 +36,11 @@
                   "pattern": "^(\\\\)?[A-Za-z]+(\\\\[A-Za-z]+)*(\\\\)?$",
                   "description": "Namespace for the type, if applicable"
                 },
+                "singular": {
+                  "type": "string",
+                  "pattern": "(^[a-z]|[A-Z0-9])[a-z]*$",
+                  "description": "Singular name of the property for array types"
+                },
                 "nullable": {
                   "type": "boolean",
                   "description": "If class property can be nullable"
@@ -43,12 +48,21 @@
                 "deprecationDescription": {
                   "type": "string",
                   "description": "Class property deprecation description"
-                },
-                "singular": {
-                  "type": "string",
-                  "pattern": "(^[a-z]|[A-Z0-9])[a-z]*$",
-                  "description": "Singular name of the property for array types"
                 }
+              },
+              "if": {
+                "properties": {
+                  "type": {
+                    "pattern": ".*\\[\\]$"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "name",
+                  "type",
+                  "singular"
+                ]
               },
               "required": [
                 "name",
