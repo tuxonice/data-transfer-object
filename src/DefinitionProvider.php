@@ -116,7 +116,7 @@ class DefinitionProvider
     /**
      * @param array<string,string|null> $property
      *
-     * @return array<string,string|null>
+     * @return array<string,string|null|false>
      */
     private function processNonNativeType(array $property): array
     {

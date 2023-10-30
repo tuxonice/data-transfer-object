@@ -20,6 +20,11 @@
           "name": "categories",
           "type": "CategoryTransfer[]",
           "singular": "category"
+        },
+        {
+          "name": "tags",
+          "type": "string[]",
+          "singular": "tag"
         }
       ]
     },

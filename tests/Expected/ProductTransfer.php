@@ -31,6 +31,11 @@ class ProductTransfer extends AbstractTransfer
     private array $categories = [];
 
     /**
+     * @var array<string>
+     */
+    private array $tags = [];
+
+    /**
      * @return string
      */
     public function getSku(): string
@@ -118,6 +123,37 @@ class ProductTransfer extends AbstractTransfer
     public function addCategory(CategoryTransfer $category): self
     {
         $this->categories[] = $category;
+
+        return $this;
+    }
+    /**
+     * @return array<string>
+     */
+    public function getTags(): array
+    {
+        return $this->tags;
+    }
+
+    /**
+     * @param array<string> $tags
+     *
+     * @return $this
+     */
+    public function setTags(array $tags): self
+    {
+        $this->tags = $tags;
+
+        return $this;
+    }
+
+    /**
+     * @param string $tag
+     *
+     * @return $this
+     */
+    public function addTag(string $tag): self
+    {
+        $this->tags[] = $tag;
 
         return $this;
     }

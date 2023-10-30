@@ -2,8 +2,12 @@
 
 namespace Tlab\Tests\Unit;
 
+use DateTime;
 use PHPUnit\Framework\TestCase;
 use Tlab\Tests\Generated\CategoryTransfer;
+use Tlab\Tests\Generated\CustomerTransfer;
+use Tlab\Tests\Generated\OrderItemTransfer;
+use Tlab\Tests\Generated\OrderTransfer;
 use Tlab\Tests\Generated\ProductTransfer;
 use Tlab\TransferObjects\DataTransferBuilder;
 use Tlab\TransferObjects\Exceptions\DefinitionException;
@@ -51,7 +55,145 @@ class DataTransferBuilderTest extends TestCase
             'price' => 10.50,
             'sku' => 'ABC123',
             'categories' => [],
+            'tags' => [],
         ], $productTransfer->toArray());
+    }
+
+    public function testCanExportTransferClassToArrayRecursivelyWithArrayOfStrings(): void
+    {
+        $productTransfer = new ProductTransfer();
+        $productTransfer
+            ->setName('test-name')
+            ->setPrice(10.50)
+            ->setSku('ABC123')
+            ->setTags(['tag1', 'tag2']);
+        self::assertEquals([
+            'name' => 'test-name',
+            'price' => 10.50,
+            'sku' => 'ABC123',
+            'categories' => [],
+            'tags' => [
+                'tag1',
+                'tag2'
+            ],
+        ], $productTransfer->toArray(true));
+    }
+
+    public function testCanExportTransferClassToArrayRecursively(): void
+    {
+        $customerTransfer = new CustomerTransfer();
+        $customerTransfer->setEmail('user@example.com')
+            ->setBirthDate(new DateTime('2000-01-01'))
+            ->setFirstName('Jonh')
+            ->setLastName('Smith')
+            ->setIsActive(true);
+
+        $orderItemTransfer1 = new OrderItemTransfer();
+        $orderItemTransfer1->setName('Chips')
+            ->setPrice(5.99)
+            ->setQuantity(1)
+            ->setId(1);
+
+        $orderItemTransfer2 = new OrderItemTransfer();
+        $orderItemTransfer2->setName('Juice')
+            ->setPrice(3.45)
+            ->setQuantity(2)
+            ->setId(2);
+
+        $orderTransfer = new OrderTransfer();
+        $orderTransfer->setCustomer($customerTransfer)
+            ->setId(1)
+            ->setCreatedAt(new DateTime('2023-10-01'))
+            ->setTotal(10.00)
+            ->setOrderItems([
+                $orderItemTransfer1,
+                $orderItemTransfer2
+            ]);
+
+
+        self::assertEquals([
+            'id' => 1,
+            'customer' => [
+                'firstName' => 'Jonh',
+                'lastName' => 'Smith',
+                'email' => 'user@example.com',
+                'birthDate' => new DateTime('2000-01-01'),
+                'isActive' => true,
+            ],
+            'total' => 10.0,
+            'orderItems' => [
+                [
+                    'id' => 1,
+                    'name' => 'Chips',
+                    'price' => 5.99,
+                    'quantity' => 1,
+                ],
+                [
+                    'id' => 2,
+                    'name' => 'Juice',
+                    'price' => 3.45,
+                    'quantity' => 2,
+                ],
+            ],
+            'createdAt' => new DateTime('2023-10-01'),
+        ], $orderTransfer->toArray(true));
+    }
+
+    public function testCanExportTransferClassToArrayNonRecursively(): void
+    {
+        $customerTransfer = new CustomerTransfer();
+        $customerTransfer->setEmail('user@example.com')
+            ->setBirthDate(new DateTime('2000-01-01'))
+            ->setFirstName('Jonh')
+            ->setLastName('Smith')
+            ->setIsActive(true);
+
+        $orderItemTransfer1 = new OrderItemTransfer();
+        $orderItemTransfer1->setName('Chips')
+            ->setPrice(5.99)
+            ->setQuantity(1)
+            ->setId(1);
+
+        $orderItemTransfer2 = new OrderItemTransfer();
+        $orderItemTransfer2->setName('Juice')
+            ->setPrice(3.45)
+            ->setQuantity(2)
+            ->setId(2);
+
+        $orderTransfer = new OrderTransfer();
+        $orderTransfer->setCustomer($customerTransfer)
+            ->setId(1)
+            ->setCreatedAt(new DateTime('2023-10-01'))
+            ->setTotal(10.00)
+            ->setOrderItems([
+                $orderItemTransfer1,
+                $orderItemTransfer2
+            ]);
+
+
+        self::assertEquals([
+            'id' => 1,
+            'customer' => (new CustomerTransfer())
+                ->setFirstName('Jonh')
+                ->setLastName('Smith')
+                ->setEmail('user@example.com')
+                ->setBirthDate(new DateTime('2000-01-01'))
+                ->setIsActive(true),
+            'total' => 10.0,
+            'orderItems' => [
+                (new OrderItemTransfer())
+                    ->setId(1)
+                    ->setName('Chips')
+                    ->setPrice(5.99)
+                    ->setQuantity(1),
+                (new OrderItemTransfer())
+                    ->setId(2)
+                    ->setName('Juice')
+                    ->setPrice(3.45)
+                    ->setQuantity(2),
+            ],
+            'createdAt' => new DateTime('2023-10-01'),
+        ], $orderTransfer->toArray(false));
     }
 
     public function testCanImportTransferClassFromArray(): void

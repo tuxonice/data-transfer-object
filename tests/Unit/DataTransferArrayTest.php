@@ -38,6 +38,7 @@ class DataTransferArrayTest extends TestCase
                 'name' => 'test-name',
                 'price' => 10.50,
                 'sku' => 'ABC123',
+                'tags' => [],
                 'categories' => [
                     (new CategoryTransfer())->setName('test-category-1'),
                     (new CategoryTransfer())->setName('test-category-2'),
@@ -58,12 +59,14 @@ class DataTransferArrayTest extends TestCase
             ->setName('test-name')
             ->setPrice(10.50)
             ->setSku('ABC123')
+            ->setTags(['tag1', 'tag2'])
             ->setCategories($categories);
         self::assertEquals(
             [
                 'name' => 'test-name',
                 'price' => 10.50,
                 'sku' => 'ABC123',
+                'tags' => ['tag1', 'tag2'],
                 'categories' => [
                     (new CategoryTransfer())->setName('test-category-1'),
                     (new CategoryTransfer())->setName('test-category-2'),

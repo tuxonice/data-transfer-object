@@ -248,6 +248,14 @@ class DefinitionProviderTest extends TestCase
                         'nullable' => false,
                         'deprecationDescription' => null,
                     ],
+                    [
+                        'type' => 'array',
+                        'elementsType' => 'string',
+                        'camelCaseName' => 'tags',
+                        'camelCaseSingularName' => 'tag',
+                        'nullable' => false,
+                        'deprecationDescription' => null,
+                    ],
                 ]
             ],
             [
