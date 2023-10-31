@@ -20,7 +20,7 @@ class DeprecatedClassTransfer extends AbstractTransfer
     /**
      * @var string|null
      */
-    private ?string $name;
+    private ?string $name = null;
 
     /**
      * @var float

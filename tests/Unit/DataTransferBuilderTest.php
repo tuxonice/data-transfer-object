@@ -216,6 +216,22 @@ class DataTransferBuilderTest extends TestCase
         ], $productTransfer->getCategories());
     }
 
+    public function testNullablePropertyReturnNullValueIfNotSet(): void
+    {
+        $data = [
+            'firstName' => 'Mary',
+            'email' => 'user@example.com',
+            'birthDate' => new DateTime('2000-03-14'),
+            'isActive' => true,
+        ];
+
+        $customerTransfer = CustomerTransfer::fromArray($data);
+        self::assertEquals('Mary', $customerTransfer->getFirstName());
+        self::assertNull($customerTransfer->getLastName());
+        self::assertEquals('user@example.com', $customerTransfer->getEmail());
+        self::assertTrue($customerTransfer->getIsActive());
+    }
+
     public function testBuildTransferWithInvalidDefinitionWillThrowException(): void
     {
         $this->expectException(DefinitionException::class);

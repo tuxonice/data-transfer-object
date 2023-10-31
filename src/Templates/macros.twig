@@ -1,5 +1,5 @@
 {%- macro property(property) %}
-    private {{ property.nullable ? '?' }}{{ property.type }} ${{ property.camelCaseName }}{{ property.type == 'array' ? ' = []' }};
+    private {{ property.nullable ? '?' }}{{ property.type }} ${{ property.camelCaseName }}{{ property.type == 'array' ? ' = []' }}{{ property.nullable ? ' = null' }};
 {% endmacro -%}
 
 {%- macro propertyDocBlock(property) %}

@@ -19,7 +19,7 @@ class CustomerTransfer extends AbstractTransfer
     /**
      * @var string|null
      */
-    private ?string $lastName;
+    private ?string $lastName = null;
 
     /**
      * @var string
