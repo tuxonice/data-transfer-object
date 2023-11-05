@@ -1,0 +1,14 @@
+{
+  "transfers": [
+    {
+      "name": "Sample",
+      "properties": [
+        {
+          "name": "response",
+          "type": "Response",
+          "namespace": "\\Symfony\\Component\\HttpFoundation\\Response"
+        }
+      ]
+    }
+  ]
+}

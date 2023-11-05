@@ -41,6 +41,10 @@ class DataTransferBuilderTest extends TestCase
         self::assertFileEquals($expectedFiles[1], $generatedFiles[1]);
         self::assertFileEquals($expectedFiles[2], $generatedFiles[2]);
         self::assertFileEquals($expectedFiles[3], $generatedFiles[3]);
+        self::assertFileEquals($expectedFiles[4], $generatedFiles[4]);
+        self::assertFileEquals($expectedFiles[5], $generatedFiles[5]);
+        self::assertFileEquals($expectedFiles[6], $generatedFiles[6]);
+        self::assertFileEquals($expectedFiles[7], $generatedFiles[7]);
     }
 
     public function testCanExportTransferClassToArray(): void

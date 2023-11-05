@@ -2,6 +2,15 @@
 
 ![Tests](https://github.com/tuxonice/data-transfer-object/actions/workflows/pipeline.yml/badge.svg)
 
+In the ever-evolving landscape of software development, efficient and structured data communication is paramount.
+DTO package is designed to streamline and enhance the way data is transferred between different layers of your
+application,
+promoting clarity, maintainability, and robustness.
+
+Whether you're building a RESTful API, a microservices architecture, or a traditional web application,
+Data Transfer Objects package empowers you to manage data flow with elegance and precision.
+Elevate your code quality and simplify your data handling processes with our intuitive and developer-friendly DTO
+solution.
 
 ## Installation
 
@@ -13,7 +22,7 @@ composer require tuxonice/data-transfer-object
 
 ## Setup
 
-The goal of this package is to create data transfer objects from json definitions as easy as possible. 
+The goal of this package is to create data transfer objects from json definitions as easy as possible.
 
 1. In your project create a folder to hold on the definition files.
 
@@ -61,6 +70,7 @@ class GenerateTransferCommand extends Command
     }
 }
 ```
+
 4. For Laravel projects:
 
 ```bash
@@ -289,7 +299,135 @@ class CustomerTransfer extends AbstractTransfer
 
 ```
 
+6. Create definition file(s)
 
+You can define one or more transfer objects definitions for each json file.
+Start by creating a json object that will contain your definitions:
+
+```json
+{
+  "transfers": [
+  ]
+}
+```
+
+and inside the transfers array define your transfer:
+
+```json
+{
+  "name": "Customer",
+  "properties": [
+    {
+      "name": "firstName",
+      "type": "string"
+    },
+    {
+      "name": "lastName",
+      "type": "string"
+    },
+    {
+      "name": "isActive",
+      "type": "bool"
+    }
+  ]
+}
+```
+
+- transfer class
+
+| field                  | type   | required | Description                                                                                                           |
+|------------------------|--------|----------|-----------------------------------------------------------------------------------------------------------------------|
+| name                   | string | yes      | The transfer object name. The result class name will be this name concatenated with "Transfer". E.g. CustomerTransfer |
+| properties             | array  | yes      | An array of objects with definition of each class property                                                            |
+| deprecationDescription | string | no       | If present and not empty, will add an annotation with @deprecated, to mark this class as deprecated                   |
+
+- class properties
+
+| field                  | type   | required                         | Description                                                                                           |
+|------------------------|--------|----------------------------------|-------------------------------------------------------------------------------------------------------|
+| name                   | string | yes                              | field name in camelCase                                                                               |
+| type                   | string | yes                              | The field type. Can be a native type (string, int, float, bool), or any other class                   |
+| deprecationDescription | string | no                               | If present and with a text, will add an annotation with @deprecated, to mark this field as deprecated |
+| nullable               | bool   | no                               | Set if the property can be null                                                                       |
+| namespace              | string | yes if the type is another class | Namespace for the class in case the property type is another class                                    |
+| singular               | string | yes if the type is an array      | Singular form of the property if the type is an array                                                 |
+
+## Example of property definitions
+
+- integer
+```
+...
+{
+  "name": "id",
+  "type": "int"
+}
+...
+```
+
+- nullable string
+```
+...
+{
+  "name": "firstName",
+  "type": "string",
+  "nullable": true
+}
+...
+```
+
+- another transfer object as property
+```
+...
+{
+  "name": "customer",
+  "type": "CustomerTransfer"
+}
+...
+```
+
+- DateTime property
+```
+...
+{
+  "name": "createdAt",
+  "type": "DateTime",
+  "namespace": "DateTime"
+}
+...
+```
+
+- Array of strings
+```
+...
+{
+  "name": "tags",
+  "type": "string[]",
+  "singular": "tag"
+}
+...
+```
+
+- Array of transfer objects
+```
+...
+{
+  "name": "categories",
+  "type": "CategoryTransfer[]",
+  "singular": "category"
+},
+...
+```
+
+- Symfony Response
+```
+...
+{
+  "name": "response",
+  "type": "Response",
+  "namespace": "\\Symfony\\Component\\HttpFoundation\\Response"
+},
+...
+```
 
 ## License
 

@@ -275,6 +275,25 @@ class DefinitionProviderTest extends TestCase
                     ],
                 ]
             ],
+            [
+                'namespace' => 'TestNamespace',
+                'className' => 'SampleTransfer',
+                'abstractClass' => 'AbstractTransfer',
+                'deprecationDescription' => null,
+                'useNamespaces' => [
+                    'Symfony\Component\HttpFoundation\Response',
+                    'Tlab\TransferObjects\AbstractTransfer'
+                ],
+                'properties' => [
+                    [
+                        'type' => 'Response',
+                        'camelCaseName' => 'response',
+                        'namespace' => 'Symfony\Component\HttpFoundation\Response',
+                        'nullable' => false,
+                        'deprecationDescription' => null,
+                    ]
+                ],
+            ],
         ], $definitionProvider->provide());
     }
 }
