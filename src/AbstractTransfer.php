@@ -48,9 +48,17 @@ abstract class AbstractTransfer implements TransferInterface
     public static function fromArray(array $data): static
     {
         $transfer = new static();
+
+        $reflect = new ReflectionClass($transfer);
+        $properties = array_map(function (ReflectionProperty $property) {
+            return $property->getName();
+        }, $reflect->getProperties(ReflectionProperty::IS_PRIVATE));
+
         foreach ($data as $key => $value) {
-            $methodName = 'set' . ucfirst($key);
-            $transfer->$methodName($value);
+            if (in_array($key, $properties, true)) {
+                $methodName = 'set' . ucfirst($key);
+                $transfer->$methodName($value);
+            }
         }
 
         return $transfer;

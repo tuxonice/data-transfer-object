@@ -216,6 +216,27 @@ class DataTransferBuilderTest extends TestCase
         ], $productTransfer->getCategories());
     }
 
+    public function testCanImportTransferClassFromArrayWithUnknownField(): void
+    {
+        $data = [
+            'name' => 'test-product-name',
+            'sku' => 'test-sku',
+            'brand' => 'test-brand',
+            'price' => 10.50,
+            'categories' => [
+                (new CategoryTransfer())->setName('test-category')
+            ]
+        ];
+
+        $productTransfer = ProductTransfer::fromArray($data);
+        self::assertEquals('test-product-name', $productTransfer->getName());
+        self::assertEquals('test-sku', $productTransfer->getSku());
+        self::assertEquals(10.50, $productTransfer->getPrice());
+        self::assertEquals([
+            (new CategoryTransfer())->setName('test-category')
+        ], $productTransfer->getCategories());
+    }
+
     public function testNullablePropertyReturnNullValueIfNotSet(): void
     {
         $data = [
