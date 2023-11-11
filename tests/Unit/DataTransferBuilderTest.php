@@ -216,6 +216,29 @@ class DataTransferBuilderTest extends TestCase
         ], $productTransfer->getCategories());
     }
 
+    public function testConvertToArrayFromArray(): void
+    {
+        $productTransfer1 = new ProductTransfer();
+        $productTransfer1->setName('test-product-name')
+            ->setSku('test-sku')
+            ->setPrice(10.50)
+            ->setTags(['red', 'small'])
+            ->setCategories([
+                (new CategoryTransfer())->setName('test-category-1'),
+                (new CategoryTransfer())->setName('test-category-2'),
+            ]);
+
+        $productTransfer2 = ProductTransfer::fromArray($productTransfer1->toArray());
+        self::assertEquals('test-product-name', $productTransfer2->getName());
+        self::assertEquals('test-sku', $productTransfer2->getSku());
+        self::assertEquals(10.50, $productTransfer2->getPrice());
+        self::assertEquals(['red','small'], $productTransfer2->getTags());
+        self::assertEquals([
+            (new CategoryTransfer())->setName('test-category-1'),
+            (new CategoryTransfer())->setName('test-category-2'),
+        ], $productTransfer2->getCategories());
+    }
+
     public function testCanImportTransferClassFromArrayWithUnknownField(): void
     {
         $data = [
