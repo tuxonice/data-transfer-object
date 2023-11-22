@@ -26,15 +26,15 @@
     "require": {
         "php": "^8.2",
         "ext-json": "*",
-        "twig/twig": "3.8.0",
-        "webmozart/assert": "1.11.0",
-        "opis/json-schema": "2.3.0"
+        "twig/twig": "^3.5",
+        "webmozart/assert": "^1.11",
+        "opis/json-schema": "^2.3"
     },
     "require-dev": {
-        "symfony/var-dumper": "6.3.8",
-        "squizlabs/php_codesniffer": "3.7.2",
-        "phpstan/phpstan": "1.10.44",
-        "phpunit/phpunit": "10.4.2"
+        "symfony/var-dumper": "^6.2",
+        "squizlabs/php_codesniffer": "^3.7",
+        "phpstan/phpstan": "^1.10",
+        "phpunit/phpunit": "^10.1"
     },
     "minimum-stability" : "stable"
 }
