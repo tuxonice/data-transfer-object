@@ -24,9 +24,11 @@ class {{ className }} extends {{ abstractClass }}
 {% for property in properties %}
 {{ macro.getMethodDocBlock(property) }}
 {{ macro.getMethod(property) }}
+{% if immutable == false %}
 {{ macro.setMethodDocBlock(property) }}
 {{ macro.setMethod(property) }}
-{% if property.type == 'array' %}
+{% endif %}
+{% if immutable == false and property.type == 'array' %}
 {{ macro.arrayAddMethodDocBlock(property) }}
 {{ macro.arrayAddMethod(property) }}
 {% endif %}

@@ -16,6 +16,10 @@
             "type": "string",
             "description": "Class deprecation description"
           },
+          "immutable": {
+            "type": "boolean",
+            "description": "Class without setters"
+          },
           "properties": {
             "type": "array",
             "items": {

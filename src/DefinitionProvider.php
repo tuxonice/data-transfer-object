@@ -32,14 +32,17 @@ class DefinitionProvider
 
         $transfers = [];
         foreach ($definitions as $definition) {
+            $isImmutable = $definition['immutable'] ?? false;
+            $className = $isImmutable ? $definition['name'] . 'TransferImmutable' : $definition['name'] . 'Transfer';
             $useNamespaces = [
                 'Tlab\TransferObjects\AbstractTransfer'
             ];
             $classTransfer = [
                 'namespace' => $this->namespace,
-                'className' => $definition['name'] . 'Transfer',
+                'className' => $className,
                 'abstractClass' => 'AbstractTransfer',
                 'deprecationDescription' => $definition['deprecationDescription'] ?? null,
+                'immutable' => $isImmutable,
             ];
 
             $classProperties = [];

@@ -22,6 +22,7 @@ class DefinitionProviderTest extends TestCase
                     'Tlab\TransferObjects\AbstractTransfer',
                 ],
                 'deprecationDescription' => null,
+                'immutable' => false,
                 'properties' => [
                     [
                         'type' => 'string',
@@ -64,6 +65,7 @@ class DefinitionProviderTest extends TestCase
                     'Tlab\TransferObjects\AbstractTransfer',
                 ],
                 'deprecationDescription' => 'This class is deprecated',
+                'immutable' => false,
                 'properties' => [
                     [
                         'type' => 'int',
@@ -101,6 +103,7 @@ class DefinitionProviderTest extends TestCase
                     'Tlab\TransferObjects\AbstractTransfer',
                 ],
                 'deprecationDescription' => null,
+                'immutable' => false,
                 'properties' => [
                     [
                         'type' => 'int',
@@ -132,6 +135,36 @@ class DefinitionProviderTest extends TestCase
             ],
             [
                 'namespace' => 'TestNamespace',
+                'className' => 'BicycleTransferImmutable',
+                'abstractClass' => 'AbstractTransfer',
+                'useNamespaces' => [
+                    'Tlab\TransferObjects\AbstractTransfer',
+                ],
+                'deprecationDescription' => null,
+                'immutable' => true,
+                'properties' => [
+                    [
+                        'type' => 'string',
+                        'camelCaseName' => 'brand',
+                        'nullable' => false,
+                        'deprecationDescription' => null,
+                    ],
+                    [
+                        'type' => 'string',
+                        'camelCaseName' => 'size',
+                        'nullable' => false,
+                        'deprecationDescription' => null,
+                    ],
+                    [
+                        'type' => 'float',
+                        'camelCaseName' => 'price',
+                        'nullable' => false,
+                        'deprecationDescription' => null,
+                    ],
+                ]
+            ],
+            [
+                'namespace' => 'TestNamespace',
                 'className' => 'OrderTransfer',
                 'abstractClass' => 'AbstractTransfer',
                 'useNamespaces' => [
@@ -139,6 +172,7 @@ class DefinitionProviderTest extends TestCase
                     'Tlab\TransferObjects\AbstractTransfer',
                 ],
                 'deprecationDescription' => null,
+                'immutable' => false,
                 'properties' => [
                     [
                         'type' => 'int',
@@ -185,6 +219,7 @@ class DefinitionProviderTest extends TestCase
                     'Tlab\TransferObjects\AbstractTransfer',
                 ],
                 'deprecationDescription' => null,
+                'immutable' => false,
                 'properties' => [
                     [
                         'type' => 'int',
@@ -220,6 +255,7 @@ class DefinitionProviderTest extends TestCase
                 'className' => 'ProductTransfer',
                 'abstractClass' => 'AbstractTransfer',
                 'deprecationDescription' => null,
+                'immutable' => false,
                 'properties' => [
                     [
                         'type' => 'string',
@@ -266,6 +302,7 @@ class DefinitionProviderTest extends TestCase
                 ],
                 'abstractClass' => 'AbstractTransfer',
                 'deprecationDescription' => null,
+                'immutable' => false,
                 'properties' => [
                     [
                         'type' => 'string',
@@ -284,6 +321,7 @@ class DefinitionProviderTest extends TestCase
                     'Symfony\Component\HttpFoundation\Response',
                     'Tlab\TransferObjects\AbstractTransfer'
                 ],
+                'immutable' => false,
                 'properties' => [
                     [
                         'type' => 'Response',

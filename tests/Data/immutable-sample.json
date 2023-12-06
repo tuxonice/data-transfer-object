@@ -1,0 +1,22 @@
+{
+  "transfers": [
+    {
+      "name": "Bicycle",
+      "immutable":true,
+      "properties": [
+        {
+          "name": "brand",
+          "type": "string"
+        },
+        {
+          "name": "size",
+          "type": "string"
+        },
+        {
+          "name": "price",
+          "type": "float"
+        }
+      ]
+    }
+  ]
+}
