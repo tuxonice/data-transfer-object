@@ -27,7 +27,6 @@
         "php": "^8.2",
         "ext-json": "*",
         "twig/twig": "^3.5",
-        "webmozart/assert": "^1.11",
         "opis/json-schema": "^2.3"
     },
     "require-dev": {

@@ -2,7 +2,7 @@
 
 namespace Tlab\TransferObjects;
 
-use Webmozart\Assert\Assert;
+use Tlab\TransferObjects\Exceptions\DefinitionException;
 
 class DataTransferBuilder
 {
@@ -11,13 +11,7 @@ class DataTransferBuilder
         private readonly string $outputPath,
         private readonly string $namespace,
     ) {
-        Assert::directory($definitionPath, 'Missing definition path');
-        Assert::directory($outputPath, 'Missing output path');
-
-        Assert::writable($definitionPath, 'Definition path is not writable');
-        Assert::readable($outputPath, 'Output path is not readable');
-
-        Assert::notEmpty($namespace, 'Namespace is missing');
+        $this->validate($definitionPath, $outputPath, $namespace);
     }
 
     public function build(): void
@@ -27,5 +21,23 @@ class DataTransferBuilder
 
         $outputBuilder = new OutputBuilder($this->outputPath, $definitions);
         $outputBuilder->save();
+    }
+
+    /**
+     * @throws DefinitionException
+     */
+    private function validate(string $definitionPath, string $outputPath, string $namespace): void
+    {
+        if (!is_dir($definitionPath) || !is_readable($definitionPath)) {
+            throw new DefinitionException('The definition path is missing or is not readable');
+        }
+
+        if (!is_dir($outputPath) || !is_writable($outputPath)) {
+            throw new DefinitionException('The output path is missing or is not writable');
+        }
+
+        if (trim($namespace) === '') {
+            throw new DefinitionException('Namespace is missing');
+        }
     }
 }

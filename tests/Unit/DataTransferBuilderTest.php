@@ -283,9 +283,46 @@ class DataTransferBuilderTest extends TestCase
     public function testBuildTransferWithInvalidDefinitionWillThrowException(): void
     {
         $this->expectException(DefinitionException::class);
+        $this->expectExceptionMessage('Invalid definition file: '.dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Data/Invalid/invalid-definition.json');
         $dataTransferBuilder = new DataTransferBuilder(
             dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Data/Invalid',
             dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Generated',
+            'Tlab\Tests\Generated'
+        );
+        $dataTransferBuilder->build();
+    }
+
+    public function testBuildTransferWithMissingNamespaceWillThrowException(): void
+    {
+        $this->expectException(DefinitionException::class);
+        $this->expectExceptionMessage('Namespace is missing');
+        $dataTransferBuilder = new DataTransferBuilder(
+            dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Data',
+            dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Generated',
+            ''
+        );
+        $dataTransferBuilder->build();
+    }
+
+    public function testBuildTransferWithInvalidDefinitionPathWillThrowException(): void
+    {
+        $this->expectException(DefinitionException::class);
+        $this->expectExceptionMessage('The definition path is missing or is not readable');
+        $dataTransferBuilder = new DataTransferBuilder(
+            dirname(__DIR__) . DIRECTORY_SEPARATOR . 'not-valid',
+            dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Generated',
+            'Tlab\Tests\Generated'
+        );
+        $dataTransferBuilder->build();
+    }
+
+    public function testBuildTransferWithInvalidOutputPathWillThrowException(): void
+    {
+        $this->expectException(DefinitionException::class);
+        $this->expectExceptionMessage('The output path is missing or is not writable');
+        $dataTransferBuilder = new DataTransferBuilder(
+            dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Data',
+            dirname(__DIR__) . DIRECTORY_SEPARATOR . 'not-valid',
             'Tlab\Tests\Generated'
         );
         $dataTransferBuilder->build();
