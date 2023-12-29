@@ -339,6 +339,7 @@ and inside the transfers array define your transfer:
 |------------------------|--------|----------|-----------------------------------------------------------------------------------------------------------------------|
 | name                   | string | yes      | The transfer object name. The result class name will be this name concatenated with "Transfer". E.g. CustomerTransfer |
 | properties             | array  | yes      | An array of objects with definition of each class property                                                            |
+| immutable              | bool   | no       | Remove setters from the class. In this case the class name will end with "TransferImmutable"                          |
 | deprecationDescription | string | no       | If present and not empty, will add an annotation with @deprecated, to mark this class as deprecated                   |
 
 - class properties
@@ -355,6 +356,7 @@ and inside the transfers array define your transfer:
 ## Example of property definitions
 
 - integer
+
 ```
 ...
 {
@@ -365,6 +367,7 @@ and inside the transfers array define your transfer:
 ```
 
 - nullable string
+
 ```
 ...
 {
@@ -376,6 +379,7 @@ and inside the transfers array define your transfer:
 ```
 
 - another transfer object as property
+
 ```
 ...
 {
@@ -386,6 +390,7 @@ and inside the transfers array define your transfer:
 ```
 
 - DateTime property
+
 ```
 ...
 {
@@ -397,6 +402,7 @@ and inside the transfers array define your transfer:
 ```
 
 - Array of strings
+
 ```
 ...
 {
@@ -408,6 +414,7 @@ and inside the transfers array define your transfer:
 ```
 
 - Array of transfer objects
+
 ```
 ...
 {
@@ -419,6 +426,7 @@ and inside the transfers array define your transfer:
 ```
 
 - Symfony Response
+
 ```
 ...
 {
