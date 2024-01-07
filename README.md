@@ -17,7 +17,7 @@ solution.
 You can install the package via composer:
 
 ```bash
-composer require tuxonice/data-transfer-object
+composer require tuxonice/transfer-objects
 ```
 
 ## Setup
