@@ -4,15 +4,57 @@ namespace Tlab\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use Tlab\TransferObjects\DefinitionProvider;
+use Tlab\TransferObjects\Exceptions\DefinitionException;
 
 class DefinitionProviderTest extends TestCase
 {
     public function testProvide(): void
     {
         $definitionProvider = new DefinitionProvider(dirname(__DIR__) . '/Data', 'TestNamespace');
-        $definitionProvider->provide();
 
         self::assertEquals([
+            [
+                'namespace' => 'TestNamespace',
+                'className' => 'AddressTransfer',
+                'abstractClass' => 'AbstractTransfer',
+                'useNamespaces' => [
+                    'Tlab\TransferObjects\AbstractTransfer',
+                ],
+                'deprecationDescription' => null,
+                'immutable' => false,
+                'properties' => [
+                    [
+                        'type' => 'string',
+                        'camelCaseName' => 'streetName',
+                        'nullable' => false,
+                        'deprecationDescription' => null,
+                    ],
+                    [
+                        'type' => 'string',
+                        'camelCaseName' => 'city',
+                        'nullable' => false,
+                        'deprecationDescription' => null,
+                    ],
+                    [
+                        'type' => 'string',
+                        'camelCaseName' => 'zipCode',
+                        'nullable' => false,
+                        'deprecationDescription' => null,
+                    ],
+                    [
+                        'type' => 'bool',
+                        'camelCaseName' => 'isDefaultBillingAddress',
+                        'nullable' => false,
+                        'deprecationDescription' => null,
+                    ],
+                    [
+                        'type' => 'bool',
+                        'camelCaseName' => 'isDefaultShippingAddress',
+                        'nullable' => false,
+                        'deprecationDescription' => null,
+                    ],
+                ]
+            ],
             [
                 'namespace' => 'TestNamespace',
                 'className' => 'CustomerTransfer',
@@ -333,5 +375,13 @@ class DefinitionProviderTest extends TestCase
                 ],
             ],
         ], $definitionProvider->provide());
+    }
+
+    public function testProvideThrowExceptionWhenNoDefinitionFilesFound(): void
+    {
+        $this->expectException(DefinitionException::class);
+        $this->expectExceptionMessage('No definition files found on '.dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Data/Empty');
+        $definitionProvider = new DefinitionProvider(dirname(__DIR__) . '/Data/Empty', 'TestNamespace');
+        $definitionProvider->provide();
     }
 }

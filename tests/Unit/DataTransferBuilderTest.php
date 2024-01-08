@@ -4,6 +4,7 @@ namespace Tlab\Tests\Unit;
 
 use DateTime;
 use PHPUnit\Framework\TestCase;
+use Tlab\Tests\Generated\AddressTransfer;
 use Tlab\Tests\Generated\CategoryTransfer;
 use Tlab\Tests\Generated\CustomerTransfer;
 use Tlab\Tests\Generated\OrderItemTransfer;
@@ -46,159 +47,117 @@ class DataTransferBuilderTest extends TestCase
         self::assertFileEquals($expectedFiles[6], $generatedFiles[6]);
         self::assertFileEquals($expectedFiles[7], $generatedFiles[7]);
         self::assertFileEquals($expectedFiles[8], $generatedFiles[8]);
+        self::assertFileEquals($expectedFiles[9], $generatedFiles[9]);
     }
 
-    public function testCanExportTransferClassToArray(): void
-    {
-        $productTransfer = new ProductTransfer();
-        $productTransfer
-            ->setName('test-name')
-            ->setPrice(10.50)
-            ->setSku('ABC123');
-        self::assertEquals([
-            'name' => 'test-name',
-            'price' => 10.50,
-            'sku' => 'ABC123',
-            'categories' => [],
-            'tags' => [],
-        ], $productTransfer->toArray());
-    }
-
-    public function testCanExportTransferClassToArrayRecursivelyWithArrayOfStrings(): void
+    public function testCanAddArrayElement(): void
     {
         $productTransfer = new ProductTransfer();
         $productTransfer
             ->setName('test-name')
             ->setPrice(10.50)
             ->setSku('ABC123')
-            ->setTags(['tag1', 'tag2']);
-        self::assertEquals([
-            'name' => 'test-name',
-            'price' => 10.50,
-            'sku' => 'ABC123',
-            'categories' => [],
-            'tags' => [
-                'tag1',
-                'tag2'
-            ],
-        ], $productTransfer->toArray(true));
+            ->addCategory((new CategoryTransfer())->setName('test-category-1'))
+            ->addCategory((new CategoryTransfer())->setName('test-category-2'));
+        self::assertEquals(
+            [
+                'name' => 'test-name',
+                'price' => 10.50,
+                'sku' => 'ABC123',
+                'tags' => [],
+                'categories' => [
+                    (new CategoryTransfer())->setName('test-category-1'),
+                    (new CategoryTransfer())->setName('test-category-2'),
+                ],
+            ], $productTransfer->toArray()
+        );
     }
 
-    public function testCanExportTransferClassToArrayRecursively(): void
+    public function testCanSetArrayElement(): void
     {
-        $customerTransfer = new CustomerTransfer();
-        $customerTransfer->setEmail('user@example.com')
-            ->setBirthDate(new DateTime('2000-01-01'))
-            ->setFirstName('Jonh')
-            ->setLastName('Smith')
-            ->setIsActive(true);
+        $categories = [
+            (new CategoryTransfer())->setName('test-category-1'),
+            (new CategoryTransfer())->setName('test-category-2'),
+        ];
 
-        $orderItemTransfer1 = new OrderItemTransfer();
-        $orderItemTransfer1->setName('Chips')
-            ->setPrice(5.99)
-            ->setQuantity(1)
-            ->setId(1);
-
-        $orderItemTransfer2 = new OrderItemTransfer();
-        $orderItemTransfer2->setName('Juice')
-            ->setPrice(3.45)
-            ->setQuantity(2)
-            ->setId(2);
-
-        $orderTransfer = new OrderTransfer();
-        $orderTransfer->setCustomer($customerTransfer)
-            ->setId(1)
-            ->setCreatedAt(new DateTime('2023-10-01'))
-            ->setTotal(10.00)
-            ->setOrderItems([
-                $orderItemTransfer1,
-                $orderItemTransfer2
-            ]);
-
-
-        self::assertEquals([
-            'id' => 1,
-            'customer' => [
-                'firstName' => 'Jonh',
-                'lastName' => 'Smith',
-                'email' => 'user@example.com',
-                'birthDate' => new DateTime('2000-01-01'),
-                'isActive' => true,
-            ],
-            'total' => 10.0,
-            'orderItems' => [
-                [
-                    'id' => 1,
-                    'name' => 'Chips',
-                    'price' => 5.99,
-                    'quantity' => 1,
-                ],
-                [
-                    'id' => 2,
-                    'name' => 'Juice',
-                    'price' => 3.45,
-                    'quantity' => 2,
+        $productTransfer = new ProductTransfer();
+        $productTransfer
+            ->setName('test-name')
+            ->setPrice(10.50)
+            ->setSku('ABC123')
+            ->setTags(['tag1', 'tag2'])
+            ->setCategories($categories);
+        self::assertEquals(
+            [
+                'name' => 'test-name',
+                'price' => 10.50,
+                'sku' => 'ABC123',
+                'tags' => ['tag1', 'tag2'],
+                'categories' => [
+                    (new CategoryTransfer())->setName('test-category-1'),
+                    (new CategoryTransfer())->setName('test-category-2'),
                 ],
             ],
-            'createdAt' => new DateTime('2023-10-01'),
-        ], $orderTransfer->toArray(true));
+            $productTransfer->toArray()
+        );
     }
 
-    public function testCanExportTransferClassToArrayNonRecursively(): void
+    public function testCanGetArrayElement(): void
     {
-        $customerTransfer = new CustomerTransfer();
-        $customerTransfer->setEmail('user@example.com')
-            ->setBirthDate(new DateTime('2000-01-01'))
-            ->setFirstName('Jonh')
-            ->setLastName('Smith')
-            ->setIsActive(true);
+        $categories = [
+            (new CategoryTransfer())->setName('test-category-1'),
+            (new CategoryTransfer())->setName('test-category-2'),
+        ];
 
-        $orderItemTransfer1 = new OrderItemTransfer();
-        $orderItemTransfer1->setName('Chips')
-            ->setPrice(5.99)
-            ->setQuantity(1)
-            ->setId(1);
-
-        $orderItemTransfer2 = new OrderItemTransfer();
-        $orderItemTransfer2->setName('Juice')
-            ->setPrice(3.45)
-            ->setQuantity(2)
-            ->setId(2);
-
-        $orderTransfer = new OrderTransfer();
-        $orderTransfer->setCustomer($customerTransfer)
-            ->setId(1)
-            ->setCreatedAt(new DateTime('2023-10-01'))
-            ->setTotal(10.00)
-            ->setOrderItems([
-                $orderItemTransfer1,
-                $orderItemTransfer2
-            ]);
-
-
-        self::assertEquals([
-            'id' => 1,
-            'customer' => (new CustomerTransfer())
-                ->setFirstName('Jonh')
-                ->setLastName('Smith')
-                ->setEmail('user@example.com')
-                ->setBirthDate(new DateTime('2000-01-01'))
-                ->setIsActive(true),
-            'total' => 10.0,
-            'orderItems' => [
-                (new OrderItemTransfer())
-                    ->setId(1)
-                    ->setName('Chips')
-                    ->setPrice(5.99)
-                    ->setQuantity(1),
-                (new OrderItemTransfer())
-                    ->setId(2)
-                    ->setName('Juice')
-                    ->setPrice(3.45)
-                    ->setQuantity(2),
+        $productTransfer = new ProductTransfer();
+        $productTransfer
+            ->setName('test-name')
+            ->setPrice(10.50)
+            ->setSku('ABC123')
+            ->setCategories($categories);
+        self::assertEquals(
+            [
+                (new CategoryTransfer())->setName('test-category-1'),
+                (new CategoryTransfer())->setName('test-category-2'),
             ],
-            'createdAt' => new DateTime('2023-10-01'),
-        ], $orderTransfer->toArray(false));
+            $productTransfer->getCategories()
+        );
+    }
+
+    public function testCanCreateTransferFromArrayWithCamelCaseKeys(): void
+    {
+        $data = [
+            'streetName' => 'test street name',
+            'city' => 'test-city',
+            'zipCode' => '1999',
+            'isDefaultBillingAddress' => true,
+            'isDefaultShippingAddress' => false,
+        ];
+        $addressTransfer = AddressTransfer::fromArray($data);
+
+        self::assertEquals('test street name', $addressTransfer->getStreetName());
+        self::assertEquals('test-city', $addressTransfer->getCity());
+        self::assertEquals('1999', $addressTransfer->getZipCode());
+        self::assertTrue($addressTransfer->getIsDefaultBillingAddress());
+        self::assertFalse($addressTransfer->getIsDefaultShippingAddress());
+    }
+
+    public function testCanCreateTransferFromArrayWithSnakeCaseKeys(): void
+    {
+        $data = [
+            'street_name' => 'test street name',
+            'city' => 'test-city',
+            'zip_code' => '1999',
+            'is_default_billing_address' => true,
+            'is_default_shipping_address' => false,
+        ];
+        $addressTransfer = AddressTransfer::fromArray($data);
+
+        self::assertEquals('test street name', $addressTransfer->getStreetName());
+        self::assertEquals('test-city', $addressTransfer->getCity());
+        self::assertEquals('1999', $addressTransfer->getZipCode());
+        self::assertTrue($addressTransfer->getIsDefaultBillingAddress());
+        self::assertFalse($addressTransfer->getIsDefaultShippingAddress());
     }
 
     public function testCanImportTransferClassFromArray(): void
@@ -263,6 +222,203 @@ class DataTransferBuilderTest extends TestCase
         self::assertEquals([
             (new CategoryTransfer())->setName('test-category')
         ], $productTransfer->getCategories());
+    }
+
+    public function testCanExportToArrayWithCamelCaseKeys(): void
+    {
+        $addressTransfer = new AddressTransfer();
+        $addressTransfer
+            ->setStreetName('test street name')
+            ->setCity('test-city')
+            ->setZipCode('1999')
+            ->setIsDefaultBillingAddress(true)
+            ->setIsDefaultShippingAddress(false);
+
+        self::assertEquals(
+            [
+                'streetName' => 'test street name',
+                'city' => 'test-city',
+                'zipCode' => '1999',
+                'isDefaultBillingAddress' => true,
+                'isDefaultShippingAddress' => false,
+            ],
+            $addressTransfer->toArray()
+        );
+    }
+
+    public function testCanExportToArrayWithSnakeCaseKeys(): void
+    {
+        $addressTransfer = new AddressTransfer();
+        $addressTransfer
+            ->setStreetName('test street name')
+            ->setCity('test-city')
+            ->setZipCode('1999')
+            ->setIsDefaultBillingAddress(true)
+            ->setIsDefaultShippingAddress(false);
+
+        self::assertEquals(
+            [
+                'street_name' => 'test street name',
+                'city' => 'test-city',
+                'zip_code' => '1999',
+                'is_default_billing_address' => true,
+                'is_default_shipping_address' => false,
+            ],
+            $addressTransfer->toArray(false, true)
+        );
+    }
+
+    public function testCanExportTransferClassToArray(): void
+    {
+        $productTransfer = new ProductTransfer();
+        $productTransfer
+            ->setName('test-name')
+            ->setPrice(10.50)
+            ->setSku('ABC123');
+        self::assertEquals([
+            'name' => 'test-name',
+            'price' => 10.50,
+            'sku' => 'ABC123',
+            'categories' => [],
+            'tags' => [],
+        ], $productTransfer->toArray());
+    }
+
+    public function testCanExportTransferClassToArrayRecursivelyWithArrayOfStrings(): void
+    {
+        $productTransfer = new ProductTransfer();
+        $productTransfer
+            ->setName('test-name')
+            ->setPrice(10.50)
+            ->setSku('ABC123')
+            ->setTags(['tag1', 'tag2']);
+        self::assertEquals([
+            'name' => 'test-name',
+            'price' => 10.50,
+            'sku' => 'ABC123',
+            'categories' => [],
+            'tags' => [
+                'tag1',
+                'tag2'
+            ],
+        ], $productTransfer->toArray(true));
+    }
+
+    public function testCanExportTransferClassToArrayRecursively(): void
+    {
+        $customerTransfer = new CustomerTransfer();
+        $customerTransfer->setEmail('user@example.com')
+            ->setBirthDate(new DateTime('2000-01-01'))
+            ->setFirstName('John')
+            ->setLastName('Smith')
+            ->setIsActive(true);
+
+        $orderItemTransfer1 = new OrderItemTransfer();
+        $orderItemTransfer1->setName('Chips')
+            ->setPrice(5.99)
+            ->setQuantity(1)
+            ->setId(1);
+
+        $orderItemTransfer2 = new OrderItemTransfer();
+        $orderItemTransfer2->setName('Juice')
+            ->setPrice(3.45)
+            ->setQuantity(2)
+            ->setId(2);
+
+        $orderTransfer = new OrderTransfer();
+        $orderTransfer->setCustomer($customerTransfer)
+            ->setId(1)
+            ->setCreatedAt(new DateTime('2023-10-01'))
+            ->setTotal(10.00)
+            ->setOrderItems([
+                $orderItemTransfer1,
+                $orderItemTransfer2
+            ]);
+
+
+        self::assertEquals([
+            'id' => 1,
+            'customer' => [
+                'firstName' => 'John',
+                'lastName' => 'Smith',
+                'email' => 'user@example.com',
+                'birthDate' => new DateTime('2000-01-01'),
+                'isActive' => true,
+            ],
+            'total' => 10.0,
+            'orderItems' => [
+                [
+                    'id' => 1,
+                    'name' => 'Chips',
+                    'price' => 5.99,
+                    'quantity' => 1,
+                ],
+                [
+                    'id' => 2,
+                    'name' => 'Juice',
+                    'price' => 3.45,
+                    'quantity' => 2,
+                ],
+            ],
+            'createdAt' => new DateTime('2023-10-01'),
+        ], $orderTransfer->toArray(true));
+    }
+
+    public function testCanExportTransferClassToArrayNonRecursively(): void
+    {
+        $customerTransfer = new CustomerTransfer();
+        $customerTransfer->setEmail('user@example.com')
+            ->setBirthDate(new DateTime('2000-01-01'))
+            ->setFirstName('John')
+            ->setLastName('Smith')
+            ->setIsActive(true);
+
+        $orderItemTransfer1 = new OrderItemTransfer();
+        $orderItemTransfer1->setName('Chips')
+            ->setPrice(5.99)
+            ->setQuantity(1)
+            ->setId(1);
+
+        $orderItemTransfer2 = new OrderItemTransfer();
+        $orderItemTransfer2->setName('Juice')
+            ->setPrice(3.45)
+            ->setQuantity(2)
+            ->setId(2);
+
+        $orderTransfer = new OrderTransfer();
+        $orderTransfer->setCustomer($customerTransfer)
+            ->setId(1)
+            ->setCreatedAt(new DateTime('2023-10-01'))
+            ->setTotal(10.00)
+            ->setOrderItems([
+                $orderItemTransfer1,
+                $orderItemTransfer2
+            ]);
+
+
+        self::assertEquals([
+            'id' => 1,
+            'customer' => (new CustomerTransfer())
+                ->setFirstName('John')
+                ->setLastName('Smith')
+                ->setEmail('user@example.com')
+                ->setBirthDate(new DateTime('2000-01-01'))
+                ->setIsActive(true),
+            'total' => 10.0,
+            'orderItems' => [
+                (new OrderItemTransfer())
+                    ->setId(1)
+                    ->setName('Chips')
+                    ->setPrice(5.99)
+                    ->setQuantity(1),
+                (new OrderItemTransfer())
+                    ->setId(2)
+                    ->setName('Juice')
+                    ->setPrice(3.45)
+                    ->setQuantity(2),
+            ],
+            'createdAt' => new DateTime('2023-10-01'),
+        ], $orderTransfer->toArray(false));
     }
 
     public function testNullablePropertyReturnNullValueIfNotSet(): void

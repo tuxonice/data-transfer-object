@@ -1,0 +1,29 @@
+{
+  "transfers": [
+    {
+      "name": "Address",
+      "properties": [
+        {
+          "name": "streetName",
+          "type": "string"
+        },
+        {
+          "name": "city",
+          "type": "string"
+        },
+        {
+          "name": "zipCode",
+          "type": "string"
+        },
+        {
+          "name": "isDefaultBillingAddress",
+          "type": "bool"
+        },
+        {
+          "name": "isDefaultShippingAddress",
+          "type": "bool"
+        }
+      ]
+    }
+  ]
+}

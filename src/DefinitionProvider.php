@@ -21,7 +21,11 @@ class DefinitionProvider
     {
         $schemaValidator = new SchemaValidator();
         $definitions = [];
-        foreach (glob($this->definitionPath . DIRECTORY_SEPARATOR . '*.json') as $filename) {
+        $fileDefinitionList = glob($this->definitionPath . DIRECTORY_SEPARATOR . '*.json');
+        if ($fileDefinitionList === false || $fileDefinitionList === []) {
+            throw new DefinitionException('No definition files found on ' . $this->definitionPath);
+        }
+        foreach ($fileDefinitionList as $filename) {
             $errors = [];
             if (!$schemaValidator->validate((string)file_get_contents($filename), $errors)) {
                 throw new DefinitionException('Invalid definition file: ' . $filename);

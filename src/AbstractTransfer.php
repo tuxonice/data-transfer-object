@@ -15,7 +15,7 @@ abstract class AbstractTransfer implements TransferInterface
     /**
      * @return array<string,mixed>
      */
-    public function toArray(bool $isRecursive = false): array
+    public function toArray(bool $isRecursive = false, bool $snakeCaseKeys = false): array
     {
         $reflect = new ReflectionClass($this);
         $properties = $reflect->getProperties(ReflectionProperty::IS_PRIVATE);
@@ -34,7 +34,8 @@ abstract class AbstractTransfer implements TransferInterface
                 continue;
             }
 
-            $data[$property->getName()] = $property->getValue($this);
+            $key = $snakeCaseKeys ? $this->camelCaseToSnakeCase($property->getName()) : $property->getName();
+            $data[$key] = $property->getValue($this);
         }
 
         return $data;
@@ -55,6 +56,15 @@ abstract class AbstractTransfer implements TransferInterface
         }, $reflect->getProperties(ReflectionProperty::IS_PRIVATE));
 
         foreach ($data as $key => $value) {
+            $key =  lcfirst(
+                str_replace(
+                    ' ',
+                    '',
+                    ucwords(
+                        str_replace('_', ' ', $key)
+                    )
+                )
+            );
             if (in_array($key, $properties, true)) {
                 $methodName = 'set' . ucfirst($key);
                 $transfer->$methodName($value);
@@ -62,6 +72,16 @@ abstract class AbstractTransfer implements TransferInterface
         }
 
         return $transfer;
+    }
+
+    /**
+     * @param string $property
+     *
+     * @return string
+     */
+    private function camelCaseToSnakeCase(string $property): string
+    {
+        return strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $property));
     }
 
     /**
