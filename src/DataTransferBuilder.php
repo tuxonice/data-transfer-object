@@ -11,11 +11,14 @@ class DataTransferBuilder
         private readonly string $outputPath,
         private readonly string $namespace,
     ) {
-        $this->validate($definitionPath, $outputPath, $namespace);
     }
 
+    /**
+     * @throws DefinitionException|Exceptions\ArrayTypeNullableException
+     */
     public function build(): void
     {
+        $this->validate($this->definitionPath, $this->outputPath, $this->namespace);
         $definitionBuilder = new DefinitionProvider($this->definitionPath, $this->namespace);
         $definitions = $definitionBuilder->provide();
 

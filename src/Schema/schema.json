@@ -54,20 +54,128 @@
                   "description": "Class property deprecation description"
                 }
               },
-              "if": {
-                "properties": {
-                  "type": {
-                    "pattern": ".*\\[\\]$"
+              "allOf": [
+                {
+                  "if": {
+                    "properties": {
+                      "name": {
+                        "$ref": "#/$defs/camel-case-name"
+                      },
+                      "type": {
+                        "$ref": "#/$defs/basic-type"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "name": {
+                        "$ref": "#/$defs/camel-case-name"
+                      },
+                      "type": {
+                        "$ref": "#/$defs/basic-type"
+                      },
+                      "nullable": {
+                        "$ref": "#/$defs/nullable"
+                      },
+                      "deprecationDescription": {
+                        "$ref": "#/$defs/property-deprecation"
+                      }
+                    },
+                    "required": ["name", "type"]
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "name": {
+                        "$ref": "#/$defs/camel-case-name"
+                      },
+                      "type": {
+                        "$ref": "#/$defs/basic-array-type"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "name": {
+                        "$ref": "#/$defs/camel-case-name"
+                      },
+                      "type": {
+                        "$ref": "#/$defs/basic-array-type"
+                      },
+                      "singular": {
+                        "$ref": "#/$defs/singular"
+                      },
+                      "deprecationDescription": {
+                        "$ref": "#/$defs/property-deprecation"
+                      }
+                    },
+                    "required": ["name", "type", "singular"]
+                  }
+                },
+
+                {
+                  "if": {
+                    "properties": {
+                      "name": {
+                        "$ref": "#/$defs/camel-case-name"
+                      },
+                      "type": {
+                        "$ref": "#/$defs/object-array-type"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "name": {
+                        "$ref": "#/$defs/camel-case-name"
+                      },
+                      "type": {
+                        "$ref": "#/$defs/object-array-type"
+                      },
+                      "singular": {
+                        "$ref": "#/$defs/singular"
+                      },
+                      "namespace": {
+                        "$ref": "#/$defs/namespace"
+                      },
+                      "deprecationDescription": {
+                        "$ref": "#/$defs/property-deprecation"
+                      }
+                    },
+                    "required": ["name", "type", "singular", "namespace"]
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "name": {
+                        "$ref": "#/$defs/camel-case-name"
+                      },
+                      "type": {
+                        "$ref": "#/$defs/transfer-array-type"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "name": {
+                        "$ref": "#/$defs/camel-case-name"
+                      },
+                      "type": {
+                        "$ref": "#/$defs/transfer-array-type"
+                      },
+                      "singular": {
+                        "$ref": "#/$defs/singular"
+                      },
+                      "deprecationDescription": {
+                        "$ref": "#/$defs/property-deprecation"
+                      }
+                    },
+                    "required": ["name", "type", "singular"]
                   }
                 }
-              },
-              "then": {
-                "required": [
-                  "name",
-                  "type",
-                  "singular"
-                ]
-              },
+              ],
               "required": [
                 "name",
                 "type"
@@ -84,5 +192,50 @@
   },
   "required": [
     "transfers"
-  ]
+  ],
+  "$defs": {
+    "camel-case-name": {
+      "type": "string",
+      "pattern": "^([a-z])+([A-Z][a-z]+)*$",
+      "description": "Class property name in camelcase"
+    },
+    "basic-type": {
+      "type": "string",
+      "enum": ["string", "int", "float", "bool"],
+      "description": "Class property type (string, int, float, bool)"
+    },
+    "basic-array-type": {
+      "type": "string",
+      "enum": ["string[]", "int[]", "float[]", "bool[]"],
+      "description": "Class property array type"
+    },
+    "object-array-type": {
+      "type": "string",
+      "pattern": "^(?!string\\[\\]$|bool\\[\\]$|int\\[\\]$|float\\[\\]$|.*(?:Transfer\\[\\]|TransferImmutable\\[\\])$)[A-Za-z]+.*\\[\\]$",
+      "description": "Class property object array type"
+    },
+    "transfer-array-type": {
+      "type": "string",
+      "pattern": "^[A-Za-z]+(Transfer|TransferImmutable)(\\[\\])$",
+      "description": "Class property Transfer and transferImmutable array type"
+    },
+    "namespace": {
+      "type": "string",
+      "pattern": "^(\\\\)?[A-Za-z]+(\\\\[A-Za-z]+)*(\\\\)?$",
+      "description": "Namespace for the type"
+    },
+    "singular": {
+      "type": "string",
+      "pattern": "(^[a-z]|[A-Z0-9])[a-z]*$",
+      "description": "Singular name of the property for array types"
+    },
+    "nullable": {
+      "type": "boolean",
+      "description": "If class property can be nullable"
+    },
+    "property-deprecation": {
+      "type": "string",
+      "description": "Class property deprecation description"
+    }
+  }
 }

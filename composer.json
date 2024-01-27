@@ -24,7 +24,7 @@
         }
     },
     "require": {
-        "php": "^8.2",
+        "php": "^8.0",
         "ext-json": "*",
         "twig/twig": "^3.5",
         "opis/json-schema": "^2.3"

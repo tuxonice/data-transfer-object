@@ -2,6 +2,7 @@
 
 namespace Tlab\TransferObjects;
 
+use Tlab\TransferObjects\Exceptions\ArrayTypeNullableException;
 use Tlab\TransferObjects\Exceptions\DefinitionException;
 
 class DefinitionProvider
@@ -16,6 +17,7 @@ class DefinitionProvider
 
     /**
      * @return array<int,array<string, mixed>>
+     * @throws DefinitionException|ArrayTypeNullableException
      */
     public function provide(): array
     {
@@ -28,7 +30,7 @@ class DefinitionProvider
         foreach ($fileDefinitionList as $filename) {
             $errors = [];
             if (!$schemaValidator->validate((string)file_get_contents($filename), $errors)) {
-                throw new DefinitionException('Invalid definition file: ' . $filename);
+                throw new DefinitionException('Invalid definition file: ' . $filename . implode("\n", $errors));
             }
             $decodeFile = json_decode((string)file_get_contents($filename), true);
             $definitions = array_merge($definitions, $decodeFile['transfers']);
@@ -70,11 +72,17 @@ class DefinitionProvider
 
     /**
      * @param array<string,mixed> $property
+     *
      * @return array<string,mixed>
+     * @throws ArrayTypeNullableException
      */
     private function processProperty(array $property): array
     {
         if (str_ends_with($property['type'], '[]')) {
+            if (isset($property['nullable']) && $property['nullable'] === true) {
+                throw new ArrayTypeNullableException('Invalid nullable property for array types');
+            }
+
             return $this->processArrayType($property);
         }
 
@@ -105,7 +113,7 @@ class DefinitionProvider
                 'camelCaseName' => $property['name'],
                 'camelCaseSingularName' => $property['singular'],
                 'namespace' => isset($property['namespace']) ? trim($property['namespace'], '\\') : null,
-                'nullable' => $property['nullable'] ?? false,
+                'nullable' => false,
                 'deprecationDescription' => $property['deprecationDescription'] ?? null,
             ];
         }
@@ -115,7 +123,7 @@ class DefinitionProvider
             'elementsType' => $elementsType,
             'camelCaseName' => $property['name'],
             'camelCaseSingularName' => $property['singular'],
-            'nullable' => $property['nullable'] ?? false,
+            'nullable' => false,
             'deprecationDescription' => $property['deprecationDescription'] ?? null,
         ];
     }

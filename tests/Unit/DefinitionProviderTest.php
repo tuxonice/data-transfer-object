@@ -4,13 +4,17 @@ namespace Tlab\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use Tlab\TransferObjects\DefinitionProvider;
+use Tlab\TransferObjects\Exceptions\ArrayTypeNullableException;
 use Tlab\TransferObjects\Exceptions\DefinitionException;
 
 class DefinitionProviderTest extends TestCase
 {
     public function testProvide(): void
     {
-        $definitionProvider = new DefinitionProvider(dirname(__DIR__) . '/Data', 'TestNamespace');
+        $definitionProvider = new DefinitionProvider(
+            dirname(__DIR__) . '/Data',
+            'TestNamespace'
+        );
 
         self::assertEquals([
             [
@@ -381,7 +385,21 @@ class DefinitionProviderTest extends TestCase
     {
         $this->expectException(DefinitionException::class);
         $this->expectExceptionMessage('No definition files found on '.dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Data/Empty');
-        $definitionProvider = new DefinitionProvider(dirname(__DIR__) . '/Data/Empty', 'TestNamespace');
+        $definitionProvider = new DefinitionProvider(
+            dirname(__DIR__) . '/Data/Empty',
+            'TestNamespace'
+        );
+        $definitionProvider->provide();
+    }
+
+    public function testProvideShouldThrowExceptionForSchemaWithNullablePropertyOnArray(): void
+    {
+        $this->expectException(ArrayTypeNullableException::class);
+        $this->expectExceptionMessage('Invalid nullable property for array types');
+        $definitionProvider = new DefinitionProvider(
+            dirname(__DIR__) . '/Data/Invalid-nullable-array',
+            'TestNamespace'
+        );
         $definitionProvider->provide();
     }
 }

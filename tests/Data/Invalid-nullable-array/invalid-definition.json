@@ -1,0 +1,24 @@
+{
+  "transfers": [
+    {
+      "name": "Product",
+      "properties": [
+        {
+          "name": "sku",
+          "type": "string"
+        },
+        {
+          "name": "someName",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "categories",
+          "type": "CategoryTransfer[]",
+          "singular": "category",
+          "nullable": true
+        }
+      ]
+    }
+  ]
+}

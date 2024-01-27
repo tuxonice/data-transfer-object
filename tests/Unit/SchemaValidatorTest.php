@@ -21,105 +21,132 @@ class SchemaValidatorTest extends TestCase
         self::assertTrue($result);
     }
 
-    public function testSchemaValidatorForInvalidPropertyName(): void
-    {
-        $schemaValidator = new SchemaValidator();
-
-        $definition = $this->loadDefinition();
-        $definition['transfers'][0]['properties'][0] = [
-            'name' => 'EmailNot-camel-case',
-            'type' => 'type-with-dash',
-            'nullable' => 'false',
-        ];
-
-        $errors = [];
-        $result = $schemaValidator->validate(json_encode($definition), $errors);
-
-        self::assertEquals([
-            '/transfers/0/properties/0/name' => 'The string should match pattern: ^([a-z])+([A-Z][a-z]+)*$',
-            '/transfers/0/properties/0/type' => 'The string should match pattern: ^[A-Za-z]+(\[\])?$',
-            '/transfers/0/properties/0/nullable' => 'The data (string) must match the type: boolean',
-        ], $errors);
-        self::assertFalse($result);
-    }
-
-    public function testSchemaValidatorForInvalidNamespace(): void
-    {
-        $schemaValidator = new SchemaValidator();
-
-        $definition = $this->loadDefinition();
-        $definition['transfers'][0]['properties'][0] = [
-            'name' => 'email',
-            'type' => 'string',
-            'namespace' => 'Acme/SomeClass',
-        ];
-
-        $errors = [];
-        $result = $schemaValidator->validate(json_encode($definition), $errors);
-
-        self::assertEquals([
-            '/transfers/0/properties/0/namespace' => 'The string should match pattern: ^(\\\\)?[A-Za-z]+(\\\\[A-Za-z]+)*(\\\\)?$',
-        ], $errors);
-        self::assertFalse($result);
-    }
-
-    public function testSchemaValidatorForArrayTypeWithSpaceBetweenBrackets(): void
-    {
-        $schemaValidator = new SchemaValidator();
-
-        $definition = $this->loadDefinition();
-        $definition['transfers'][0]['properties'][0] = [
-            'name' => 'tags',
-            'type' => 'string[ ]',
-            'singular' => 'tag',
-        ];
-
-        $errors = [];
-        $result = $schemaValidator->validate(json_encode($definition), $errors);
-
-        self::assertEquals([
-            '/transfers/0/properties/0/type' => 'The string should match pattern: ^[A-Za-z]+(\[\])?$',
-        ], $errors);
-        self::assertFalse($result);
-    }
-
-    public function testSchemaValidatorForArrayTypeWithMissingSingularProperty(): void
-    {
-        $schemaValidator = new SchemaValidator();
-
-        $definition = $this->loadDefinition();
-        $definition['transfers'][0]['properties'][0] = [
-            'name' => 'tags',
-            'type' => 'string[]',
-        ];
-
-        $errors = [];
-        $result = $schemaValidator->validate(json_encode($definition), $errors);
-
-        self::assertEquals([
-            '/transfers/0/properties/0' => 'The required properties (singular) are missing',
-        ], $errors);
-        self::assertFalse($result);
-    }
-
     /**
-     * @return array<string,mixed>
+     * @dataProvider dataProvider
+     * @param array $requestDefinition
+     * @param array $expectedErrors
+     * @param bool $isValid
+     *
+     * @return void
      */
-    private function loadDefinition(): array
+    public function testSchemaPropertiesValidation(array $requestDefinition, array $expectedErrors, bool $isValid): void
+    {
+        $schemaValidator = new SchemaValidator();
+        $definition = [
+            "transfers" => [
+                $requestDefinition
+            ]
+        ];
+
+        $errors = [];
+        $result = $schemaValidator->validate(json_encode($definition), $errors);
+
+        self::assertEquals($expectedErrors, $errors);
+        self::assertEquals($isValid, $result);
+    }
+
+    public static function dataProvider(): array
     {
         return [
-            "transfers" => [
+            'Invalid Property Name Should Fail' => [
                 [
                     "name" => "Customer",
                     "deprecationDescription" => "This class is deprecated",
                     "properties" => [
                         [
-                            "name" => "email",
-                            "type" => "string",
-                            "nullable" => false
+                            'name' => 'EmailNot-camel-case',
+                            'type' => 'type-with-dash',
+                            'nullable' => 'false',
                         ],
                     ]
-                ]
+                ],
+                [
+                    '/transfers/0/properties/0/name' => 'The string should match pattern: ^([a-z])+([A-Z][a-z]+)*$',
+                    '/transfers/0/properties/0/type' => 'The string should match pattern: ^[A-Za-z]+(\[\])?$',
+                    '/transfers/0/properties/0/nullable' => 'The data (string) must match the type: boolean',
+                ],
+                false,
+            ],
+            'Invalid Namespace Should Fail' => [
+                [
+                    "name" => "Customer",
+                    "deprecationDescription" => "This class is deprecated",
+                    "properties" => [
+                        [
+                            'name' => 'email',
+                            'type' => 'SomeClass[]',
+                            'namespace' => 'Acme/SomeClass',
+                        ],
+                    ]
+                ],
+                [
+                    '/transfers/0/properties/0/namespace' => 'The string should match pattern: ^(\\\\)?[A-Za-z]+(\\\\[A-Za-z]+)*(\\\\)?$',
+                ],
+                false,
+            ],
+            'Array Type With Space Between Brackets Should Fail' => [
+                [
+                    "name" => "Customer",
+                    "deprecationDescription" => "This class is deprecated",
+                    "properties" => [
+                        [
+                            'name' => 'tags',
+                            'type' => 'string[ ]',
+                            'singular' => 'tag',
+                        ],
+                    ]
+                ],
+                [
+                    '/transfers/0/properties/0/type' => 'The string should match pattern: ^[A-Za-z]+(\[\])?$',
+                ],
+                false,
+            ],
+            'Array Type With Missing Singular Property Should Fail' => [
+                [
+                    "name" => "Customer",
+                    "deprecationDescription" => "This class is deprecated",
+                    "properties" => [
+                        [
+                            'name' => 'tags',
+                            'type' => 'string[]',
+                        ],
+                    ]
+                ],
+                [
+                    '/transfers/0/properties/0' => 'The required properties (singular) are missing',
+                ],
+                false,
+            ],
+            'Array Of DateTime Without Namespace Should Fail' => [
+                [
+                    "name" => "Customer",
+                    "deprecationDescription" => "This class is deprecated",
+                    "properties" => [
+                        [
+                            'name' => 'dates',
+                            'type' => 'DateTime[]',
+                            'singular' => 'date'
+                        ],
+                    ]
+                ],
+                [
+                    '/transfers/0/properties/0' => 'The required properties (namespace) are missing',
+                ],
+                false,
+            ],
+            'Array Of Transfers Without Namespace Should Not Fail' => [
+                [
+                    "name" => "Customer",
+                    "properties" => [
+                        [
+                            'name' => 'products',
+                            'type' => 'ProductTransfer[]',
+                            'singular' => 'product'
+                        ],
+                    ]
+                ],
+                [],
+                true,
             ]
         ];
     }
