@@ -1,6 +1,11 @@
 # Bare simple data transfer object
 
-![Tests](https://github.com/tuxonice/data-transfer-object/actions/workflows/pipeline.yml/badge.svg)
+<p>
+<a href="https://github.com/tuxonice/data-transfer-object/actions"><img src="https://github.com/tuxonice/data-transfer-object/actions/workflows/pipeline.yml/badge.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/tuxonice/transfer-objects"><img src="https://img.shields.io/packagist/dt/tuxonice/transfer-objects" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/tuxonice/transfer-objects"><img src="https://img.shields.io/github/v/release/tuxonice/data-transfer-object" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/tuxonice/transfer-objects"><img src="https://img.shields.io/packagist/l/tuxonice/transfer-objects" alt="License"></a>
+</p>
 
 In the ever-evolving landscape of software development, efficient and structured data communication is paramount.
 DTO package is designed to streamline and enhance the way data is transferred between different layers of your
