@@ -20,6 +20,7 @@ class OutputBuilder
     public function save(): void
     {
         $template = $this->getTwigEnvironment()->load('class.twig');
+        $this->cleanupOutputFolder();
 
         foreach ($this->definitions as $definition) {
             $classContent = $template->render($definition);
@@ -38,5 +39,24 @@ class OutputBuilder
                 'cache' => false,
             ]
         );
+    }
+
+    private function cleanupOutputFolder(): void
+    {
+        $filesToRemove = [];
+        $dataTransferFiles = glob($this->outputPath . DIRECTORY_SEPARATOR . '*Transfer.php');
+        $immutableDataTransferFiles = glob($this->outputPath . DIRECTORY_SEPARATOR . '*TransferImmutable.php');
+        if ($dataTransferFiles !== false) {
+            $filesToRemove = array_merge($filesToRemove, $dataTransferFiles);
+        }
+        if ($immutableDataTransferFiles !== false) {
+            $filesToRemove = array_merge($filesToRemove, $immutableDataTransferFiles);
+        }
+
+        foreach ($filesToRemove as $filename) {
+            if (is_file($filename) && is_writable($filename)) {
+                unlink($filename);
+            }
+        }
     }
 }
