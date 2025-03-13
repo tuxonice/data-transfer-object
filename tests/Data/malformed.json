@@ -1,0 +1,19 @@
+{
+    "transfers": [
+        {
+            "name": "MalformedNamespace",
+            "properties": [
+                {
+                    "name": "invalidNamespace",
+                    "type": "DateTime",
+                    "namespace": "Invalid\\Namespace\\"
+                },
+                {
+                    "name": "doubleBackslash",
+                    "type": "SomeClass",
+                    "namespace": "Double\\\\Backslash"
+                }
+            ]
+        }
+    ]
+}

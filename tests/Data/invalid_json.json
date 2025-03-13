@@ -1,0 +1,17 @@
+{
+    "transfers": [
+        {
+            "name": "InvalidJson",
+            "properties": [
+                {
+                    "name": "id",
+                    "type": "int"
+                }
+                {
+                    "name": "status"
+                    "type": "string"
+                }
+            ]
+        }
+    ]
+}

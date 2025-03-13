@@ -1,0 +1,76 @@
+{
+    "transfers": [
+        {
+            "name": "Order",
+            "properties": [
+                {
+                    "name": "id",
+                    "type": "int"
+                },
+                {
+                    "name": "customer",
+                    "type": "CustomerTransfer",
+                    "nullable": true
+                },
+                {
+                    "name": "items",
+                    "type": "OrderItemTransfer[]",
+                    "singular": "item"
+                }
+            ]
+        },
+        {
+            "name": "OrderItem",
+            "properties": [
+                {
+                    "name": "productId",
+                    "type": "int"
+                },
+                {
+                    "name": "quantity",
+                    "type": "int"
+                },
+                {
+                    "name": "product",
+                    "type": "ProductTransfer"
+                }
+            ]
+        },
+        {
+            "name": "Product",
+            "properties": [
+                {
+                    "name": "id",
+                    "type": "int"
+                },
+                {
+                    "name": "name",
+                    "type": "string"
+                },
+                {
+                    "name": "category",
+                    "type": "CategoryTransfer",
+                    "nullable": true
+                }
+            ]
+        },
+        {
+            "name": "Category",
+            "properties": [
+                {
+                    "name": "id",
+                    "type": "int"
+                },
+                {
+                    "name": "name",
+                    "type": "string"
+                },
+                {
+                    "name": "parentCategory",
+                    "type": "CategoryTransfer",
+                    "nullable": true
+                }
+            ]
+        }
+    ]
+}

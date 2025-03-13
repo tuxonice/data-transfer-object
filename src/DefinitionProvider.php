@@ -8,6 +8,7 @@ use Tlab\TransferObjects\Exceptions\DefinitionException;
 class DefinitionProvider
 {
     private const NATIVE_TYPES = ['string', 'int', 'float', 'bool'];
+    private const FILE_PATTERN = '*.json';
 
     public function __construct(
         private readonly string $definitionPath,
@@ -23,16 +24,27 @@ class DefinitionProvider
     {
         $schemaValidator = new SchemaValidator();
         $definitions = [];
-        $fileDefinitionList = glob($this->definitionPath . DIRECTORY_SEPARATOR . '*.json');
+        $fileDefinitionList = glob($this->definitionPath . DIRECTORY_SEPARATOR . self::FILE_PATTERN);
         if ($fileDefinitionList === false || $fileDefinitionList === []) {
             throw new DefinitionException('No definition files found on ' . $this->definitionPath);
         }
         foreach ($fileDefinitionList as $filename) {
             $errors = [];
-            if (!$schemaValidator->validate((string)file_get_contents($filename), $errors)) {
+            $fileContent = @file_get_contents($filename);
+            if ($fileContent === false) {
+                throw new DefinitionException(sprintf('Could not read definition file: %s', $filename));
+            }
+
+            if (!$schemaValidator->validate($fileContent, $errors)) {
                 throw new DefinitionException('Invalid definition file: ' . $filename . implode("\n", $errors));
             }
-            $decodeFile = json_decode((string)file_get_contents($filename), true);
+            $decodeFile = json_decode($fileContent, true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new DefinitionException(sprintf('Invalid JSON in file %s: %s', $filename, json_last_error_msg()));
+            }
+            if (!isset($decodeFile['transfers']) || !is_array($decodeFile['transfers'])) {
+                throw new DefinitionException(sprintf('Missing or invalid transfers array in file %s', $filename));
+            }
             $definitions = array_merge($definitions, $decodeFile['transfers']);
         }
 
@@ -129,9 +141,10 @@ class DefinitionProvider
     }
 
     /**
-     * @param array<string,string|null> $property
+     * Process non-native type properties and return their configuration
      *
-     * @return array<string,string|null|false>
+     * @param array<string,mixed> $property Property configuration
+     * @return array<string,mixed> Processed property configuration with type, name, namespace, and nullable status
      */
     private function processNonNativeType(array $property): array
     {
