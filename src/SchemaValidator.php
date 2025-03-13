@@ -4,6 +4,7 @@ namespace Tlab\TransferObjects;
 
 use Opis\JsonSchema\Validator;
 use Opis\JsonSchema\Errors\ErrorFormatter;
+use Tlab\TransferObjects\Exceptions\DefinitionException;
 
 class SchemaValidator
 {
