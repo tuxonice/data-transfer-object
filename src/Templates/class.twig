@@ -28,7 +28,7 @@ class {{ className }} extends {{ abstractClass }}
 {{ macro.setMethodDocBlock(property) }}
 {{ macro.setMethod(property) }}
 {% endif %}
-{% if immutable == false and property.type == 'array' %}
+{% if immutable == false and property.type == 'array' and property.camelCaseSingularName %}
 {{ macro.arrayAddMethodDocBlock(property) }}
 {{ macro.arrayAddMethod(property) }}
 {% endif %}
