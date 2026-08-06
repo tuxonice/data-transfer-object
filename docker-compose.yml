@@ -1,0 +1,12 @@
+services:
+  php:
+    build:
+      context: .
+      args:
+        PHP_VERSION: "${PHP_VERSION:-8.2}"
+        UID: "${UID:-1001}"
+        GID: "${GID:-1001}"
+    image: data-transfer-object:php${PHP_VERSION:-8.2}
+    volumes:
+      - .:/app
+    working_dir: /app

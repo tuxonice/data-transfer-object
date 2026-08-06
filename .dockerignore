@@ -1,0 +1,7 @@
+.git
+.github
+.idea
+.phpunit.cache
+coverage
+docs
+vendor

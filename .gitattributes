@@ -1,0 +1,19 @@
+# Development-only paths, excluded from the distributed package.
+#
+# Composer installs from `dist`, which for this package is GitHub's archive of
+# the tag. That archive honours `export-ignore`, so the entries below never
+# reach a consumer's vendor/ directory. Local checkouts and CI clone the
+# repository instead of the archive, so both are unaffected.
+
+/.dockerignore      export-ignore
+/.gitattributes     export-ignore
+/.github/           export-ignore
+/.gitignore         export-ignore
+/Dockerfile         export-ignore
+/Makefile           export-ignore
+/docker-compose.yml export-ignore
+/phpcs.xml          export-ignore
+/phpstan.neon       export-ignore
+/phpunit.php        export-ignore
+/phpunit.xml        export-ignore
+/tests/             export-ignore
