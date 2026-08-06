@@ -527,11 +527,11 @@ and inside the ``transfers`` array define your transfer:
 | Field                  | Type   | Required                         | Default | Description                                                                                                                                       |
 |------------------------|--------|----------------------------------|---------|---------------------------------------------------------------------------------------------------------------------------------------------------|
 | name                   | string | yes                              | --      | field name in camelCase                                                                                                                           |
-| type                   | string | yes                              | --      | The field type. Can be a native type (string, int, float, bool), or any other class. If the type ends with [], will mark the property as an array |
+| type                   | string | yes                              | --      | The field type. Can be a native type (string, int, float, bool), `array`, or any other class. If the type ends with [], will mark the property as a typed array |
 | deprecationDescription | string | no                               | ""      | If present and with a text, will add an annotation with @deprecated, to mark this field as deprecated                                             |
-| nullable               | bool   | no                               | false   | Set if the property can be null. Can not be set to true when the type is an array                                                                 |
+| nullable               | bool   | no                               | false   | Set if the property can be null. Can not be set to true for a typed array (a type ending in []), but is allowed for a plain `array`                |
 | namespace              | string | yes if the type is another class | --      | Namespace for the class in case the property type is another class (except another transfer object)                                               |
-| singular               | string | yes if the type is an array      | --      | Singular form of the property if the type is an array                                                                                             |
+| singular               | string | yes if the type is a typed array | --      | Singular form of the property, used to name the "add" method. Only applies to types ending in []                                                   |
 
 ### Example of property definitions
 
@@ -590,6 +590,28 @@ and inside the ``transfers`` array define your transfer:
   "name": "categories",
   "type": "CategoryTransfer[]",
   "singular": "category"
+}
+```
+
+- Plain array, for a structure with no single element type
+
+```json lines
+{
+  "name": "meta",
+  "type": "array"
+}
+```
+
+Documented as `array<mixed>` and defaulting to `[]`. No `singular` is needed and
+no `add` method is generated, since there is no element type to name one after.
+Unlike a typed array, a plain `array` may be `nullable`, in which case it
+defaults to `null` instead:
+
+```json lines
+{
+  "name": "payload",
+  "type": "array",
+  "nullable": true
 }
 ```
 

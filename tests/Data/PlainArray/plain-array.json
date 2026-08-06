@@ -1,0 +1,18 @@
+{
+  "transfers": [
+    {
+      "name": "PlainArray",
+      "properties": [
+        {
+          "name": "meta",
+          "type": "array"
+        },
+        {
+          "name": "payload",
+          "type": "array",
+          "nullable": true
+        }
+      ]
+    }
+  ]
+}

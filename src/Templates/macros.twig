@@ -1,10 +1,10 @@
 {%- macro property(property) %}
-    private {{ property.nullable ? '?' }}{{ property.type }} ${{ property.camelCaseName }}{{ property.type == 'array' ? ' = []' }}{{ property.nullable ? ' = null' }};
+    private {{ property.nullable ? '?' }}{{ property.type }} ${{ property.camelCaseName }}{{ property.nullable ? ' = null' : (property.type == 'array' ? ' = []') }};
 {% endmacro -%}
 
 {%- macro propertyDocBlock(property) %}
     /**
-     * @var {{ property.type }}{{ property.nullable ? '|null' }}{% if property.type == 'array' %}<{{ property.elementsType }}>{% endif ~%}
+     * @var {{ property.type }}{% if property.type == 'array' and property.elementsType %}<{{ property.elementsType }}>{% endif %}{{ property.nullable ? '|null' }}{# ~#}
      */
 {%- endmacro -%}
 
@@ -18,7 +18,7 @@
 {% macro getMethodDocBlock(property) %}
     /**
 {% if property.type == 'array' %}
-     * @return array<{{ property.elementsType }}>
+     * @return array{% if property.elementsType %}<{{ property.elementsType }}>{% endif %}{{ property.nullable ? '|null' }}
 {% else %}
      * @return {{ property.type }}{{ property.nullable ? '|null' }}
 {% endif %}
@@ -41,7 +41,7 @@
 {%- macro setMethodDocBlock(property) %}
     /**
 {% if property.type == 'array' %}
-     * @param array<{{ property.elementsType }}> ${{ property.camelCaseName }}
+     * @param array{% if property.elementsType %}<{{ property.elementsType }}>{% endif %}{{ property.nullable ? '|null' }} ${{ property.camelCaseName }}
 {% else %}
      * @param {{ property.type }}{{ property.nullable ? '|null' }} ${{ property.camelCaseName }}
 {% endif %}

@@ -9,6 +9,8 @@ class DefinitionProvider
 {
     private const NATIVE_TYPES = ['string', 'int', 'float', 'bool'];
 
+    private const PLAIN_ARRAY_TYPE = 'array';
+
     public function __construct(
         private readonly string $definitionPath,
         private readonly string $namespace,
@@ -86,6 +88,10 @@ class DefinitionProvider
             return $this->processArrayType($property);
         }
 
+        if ($property['type'] === self::PLAIN_ARRAY_TYPE) {
+            return $this->processPlainArrayType($property);
+        }
+
         if (!in_array($property['type'], self::NATIVE_TYPES)) {
             return $this->processNonNativeType($property);
         }
@@ -124,6 +130,28 @@ class DefinitionProvider
             'camelCaseName' => $property['name'],
             'camelCaseSingularName' => $property['singular'],
             'nullable' => false,
+            'deprecationDescription' => $property['deprecationDescription'] ?? null,
+        ];
+    }
+
+    /**
+     * A property declared as `array` has no element type, unlike `string[]` or
+     * `FooTransfer[]`. It therefore documents as `array<mixed>` and gets no
+     * "add" method: there is no singular to name one after.
+     *
+     * @param array<string,mixed> $property
+     *
+     * @return array<string,mixed>
+     */
+    private function processPlainArrayType(array $property): array
+    {
+        return [
+            'type' => self::PLAIN_ARRAY_TYPE,
+            'elementsType' => 'mixed',
+            'camelCaseName' => $property['name'],
+            'camelCaseSingularName' => null,
+            'namespace' => null,
+            'nullable' => $property['nullable'] ?? false,
             'deprecationDescription' => $property['deprecationDescription'] ?? null,
         ];
     }
