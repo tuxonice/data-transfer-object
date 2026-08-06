@@ -603,6 +603,29 @@ and inside the ``transfers`` array define your transfer:
 }
 ```
 
+## Contributing
+
+The test suite runs in Docker, on the same PHP version the CI pipeline uses, with
+[PCOV](https://github.com/krakjoe/pcov) available for code coverage. Build the image once:
+
+```bash
+make build
+make install
+```
+
+Then:
+
+| Command | Description |
+|---------|-------------|
+| `make test` | Run the test suite |
+| `make coverage` | Run the test suite and write an HTML report to `coverage/` |
+| `make phpcs` | Check the code style |
+| `make phpstan` | Run static analysis |
+| `make ci` | Run the full pipeline, as CI does |
+| `make shell` | Open a shell in the container |
+
+Run `make` on its own to list the available targets.
+
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
